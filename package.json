@@ -1,0 +1,32 @@
+{
+  "name": "multischemase",
+  "version": "1.0.0",
+  "description": "Multischemase é uma ferramenta de criação de banco de dados multi schemas e migração independente de estrutura para o Node.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-senior-com-br/multischemase.git"
+  },
+  "keywords": [
+    "multi",
+    "schema",
+    "agnostic",
+    "migration"
+  ],
+  "author": "André Rezende",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dev-senior-com-br/multischemase/issues"
+  },
+  "homepage": "https://github.com/dev-senior-com-br/multischemase#readme",
+  "devDependencies": {
+    "@types/jest": "^25.2.3",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.1.0",
+    "typescript": "^3.9.3"
+  }
+}
