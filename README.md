@@ -23,7 +23,7 @@ node .\bin\flyway.js -c conf/config.js migrate
 
 #### Funcionalidades
 |Parâmetro|Descrição|
-|-----|----|--------|-----------|
+|-----|----|
 |migrate|Migra o schema para a última versão.O Flyway irá criar a tabela de metadata automaticamente se ela não existir.|
 |clean|Apaga todos objetos (tables, views, procedures, triggers, ...) nos schemas configurados. Os schemas são limpos na ordem especificadas pelas propriedades dos schemas.|
 |info|Imprime os detalhes e informações de status sobre todas as migrações.|
