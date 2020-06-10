@@ -2,9 +2,10 @@ Multischemase
 ================
 
 Multischemase é uma ferramenta de criação de banco de dados multi schemas e migração independente de estrutura para o Node.
+Este Wrapper irá realizar o download do último `cli` do `Flyway` e irá permitir realizar a migração com os seus scripts do seu projeto/pacote.
 
-## Depêndencias
-Esse projeto tem depêndencia de JAVA +1.8 e com variável de ambiente configurada JAVA_HOME.
+## Dependências
+Esse projeto tem depêndencia de JAVA +1.8 devido ao `Flyway` e com variável de ambiente configurada JAVA_HOME.
 
 ## Suporte
 Esse projeto poderá ser executado nos seguintes sistemas operacionais que estão testados: Windows 10, Linux e Mac OS X
@@ -34,8 +35,8 @@ node .\bin\flyway.js -c conf/config.js migrate
 ## Configurações
 As configurações poderão ser realizas por arquivo JS ou JSON. Na pasta `conf` possui um exemplo em Postgres local de nome `config.js`.
 A função pede dois parâmetros:<br>
-O nome do serviço pela variável `service`;<br>
-O nome do tenant pela variável `tenant`.
+O nome do aplicação ou serviço do seu projeto pela variável `service`;<br>
+O nome do tenant utilizado para acesso as informações do banco de dados pela variável `tenant`.
 Para configurar a conexão com o seu banco, altere as propriedades conforme abaixo:
 ```
         flywayArgs: {
