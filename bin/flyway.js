@@ -10,6 +10,8 @@ process.title = 'flyway';
 program
     .version(pkg.version)
     .option('-c, --configfile <file>', 'Um jscript ou arquivo JSON contendo as configurações.')
+    .option('-h, --help', 'Mostrar os comandos de ajuda')
+    .option('-V, --version', 'Mostra o número da versão de migração do banco de dados configurado.')
     .on('--help', function() {
         console.log(' Para verificar as opções de configuração do Flyway\'s: https://flywaydb.org/documentation/commandline/');
     });
