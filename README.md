@@ -1,11 +1,11 @@
 Multischemase
 ================
-
 Multischemase é uma ferramenta de criação de banco de dados multi schemas e migração independente de estrutura para o Node.
 Este Wrapper irá realizar o download do último `cli` do `Flyway` e irá permitir realizar a migração com os seus scripts do seu projeto/pacote.
 
 ## Dependências
 Esse projeto tem depêndencia de JAVA +1.8 devido ao `Flyway` e com variável de ambiente configurada JAVA_HOME.
+Também será necessário ter instalado o NPM e o Node para execução do mesmo.
 
 ## Suporte
 Esse projeto poderá ser executado nos seguintes sistemas operacionais que estão testados: Windows 10, Linux e Mac OS X
@@ -51,15 +51,27 @@ Os arquivos de migração devem ficar localizados na pasta `db/sql` e a extensã
 Vide exemplo de arquivo em  `V0001__StartingOut.pgsql` que criará uma função de nome _next_id no schema public do seu banco Postgres. 
 
 ## Compilar o projeto
-
 O comando abaixo permite a transpilação/compilação do projeto:
 ```
 npm run build
 ```
 
 ## Testar o projeto
-
 Para executar os testes do projeto:
 ```
 npm t
+```
+## Exemplo de uso
+Foi adicionado um exemplo de uso na pasta `example` com o arquivo `multischemase.js`
+Para executa-lo, altere o arquivo localizado na pasta `conf` de nome `config.js` com as configurações de banco de dados Postgres desejada.
+Realize a instalação das dependência do projeto com o comando abaixo na raíz do projeto:
+```
+npm i
+```
+
+Realize o build do projeto, conforme descrito no tópico de `Compilar o projeto`.
+
+Execute o comando para realizar a migração de exemplo em seu banco de dados com o scripts localizados em `db\sql`.
+```
+node .\example\multischemase.js
 ```

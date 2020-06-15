@@ -4,8 +4,12 @@
   "description": "Multischemase é uma ferramenta de criação de banco de dados multi schemas e migração independente de estrutura para o Node.",
   "main": "dist/index.js",
   "scripts": {
+    "prebuild": "del-cli --force ./dist",
     "build": "tsc",
     "migrate": "flyway -configFiles=conf/flyway.js migrate",
+    "postbuild": "cpx **/*.ts ./dist && del-cli --force ./dist/node_modules && del-cli --force ./dist/examples",
+    "format": "prettier --write \"lib/**/*.ts\" \"lib/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
     "test": "jest"
   },
   "repository": {
@@ -30,7 +34,9 @@
     "umzug-typescript-helper": "1.0.9"
   },
   "devDependencies": {
+    "@deboxsoft/cpx": "^1.5.0",
     "@types/jest": "^25.2.3",
+    "del-cli": "^3.0.1",
     "flywaydb-cli": "^0.8.3",
     "jest": "^26.0.1",
     "ts-jest": "^26.1.0",
