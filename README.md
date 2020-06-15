@@ -56,11 +56,12 @@ O comando abaixo permite a transpilação/compilação do projeto:
 npm run build
 ```
 
-## Testar o projeto
+<!-- ## Testar o projeto
 Para executar os testes do projeto:
 ```
 npm t
 ```
+-->
 ## Exemplo de uso
 Foi adicionado um exemplo de uso na pasta `example` com o arquivo `multischemase.js`
 Para executa-lo, altere o arquivo localizado na pasta `conf` de nome `config.js` com as configurações de banco de dados Postgres desejada.
