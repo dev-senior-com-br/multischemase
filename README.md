@@ -19,7 +19,7 @@ npm install
 ### Executar por linha de comando
 Para executar a migração por linha de comando, digite:
 ```
-node .\bin\flyway.js -c conf/config.js migrate
+node .\example\multischemase.js
 ```
 
 #### Funcionalidades
@@ -33,7 +33,8 @@ node .\bin\flyway.js -c conf/config.js migrate
 |validate|Valida migrações aplicadas com as encontradas (no sistema de arquivos ou classpath) para detectar alterações acidentais possibilitando que os schemas sejam criados exatamente como desejado.A validação falhará se:<br>- diferenças nos nomes das migrações, tipos or checksums encontrados<br>- versões aplicadas que não podem ser resolvidas localmente<br>- versões resolvidas que não foram aplicadas ainda|
 			 
 ## Configurações
-As configurações poderão ser realizas por arquivo JS ou JSON. Na pasta `conf` possui um exemplo em Postgres local de nome `config.js`.
+As configurações poderão ser realizas por arquivo JS ou JSON. Na pasta `conf` possui um exemplo em Postgres local de nome `config.js`. Pode ser alterado o nome ao realizar a alterando os parâmetros: 
+`configFolder`, `configFile` do método `exec()`. *NÃO UTILILIZAR CARACTERES ESPECIAIS*.
 A função pede dois parâmetros:<br>
 O nome do aplicação ou serviço do seu projeto pela variável `service`;<br>
 O nome do tenant utilizado para acesso as informações do banco de dados pela variável `tenant`.
