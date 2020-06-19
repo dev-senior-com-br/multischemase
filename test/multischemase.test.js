@@ -60,7 +60,7 @@ storeLog = (inputs) => (outputData += inputs);
     require("../dist/index");
     try {
       var command = "";
-      multischemase.exec(command, "test/conf", null);
+      multischemase.exec(command, "./conf", null);
       throw new Error("Missing empty command, must throws an error.");
     } catch (err) {
       console.log("Error: " + err);
@@ -79,7 +79,7 @@ storeLog = (inputs) => (outputData += inputs);
       require("../dist/index");
   
       var command = CommandsEnum.MIGRATE;
-      multischemase.exec(command, "test/conf");
+      multischemase.exec(command, "./conf");
     });
 
   test("BASELINE", () => {
@@ -87,7 +87,7 @@ storeLog = (inputs) => (outputData += inputs);
     require("../dist/index");
 
     var command = CommandsEnum.BASELINE;
-    multischemase.exec(command, "test/conf");
+    multischemase.exec(command, "./conf");
   });
 
     test("REPAIR", () => {
@@ -95,7 +95,7 @@ storeLog = (inputs) => (outputData += inputs);
       require("../dist/index");
 
       var command = CommandsEnum.REPAIR;
-      multischemase.exec(command, "test/conf");
+      multischemase.exec(command, "./conf");
     });
 
   test("VALIDATE", () => {
@@ -103,7 +103,7 @@ storeLog = (inputs) => (outputData += inputs);
     require("../dist/index");
 
     var command = CommandsEnum.VALIDATE;
-    multischemase.exec(command, "test/conf");
+    multischemase.exec(command, "./conf");
   });
 
   test("CLEAN", () => {
@@ -111,6 +111,6 @@ storeLog = (inputs) => (outputData += inputs);
       require("../dist/index");
 
       var command = CommandsEnum.CLEAN;
-      multischemase.exec(command, "test/conf");
+      multischemase.exec(command, "./conf");
     });
 }
