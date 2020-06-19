@@ -1,5 +1,5 @@
-var Multischemase = require("../dist/index").Multischemase;
-var CommandsEnum = require("../dist/index").CommandsEnum;
+var Multischemase = require("multischemase").Multischemase;
+var CommandsEnum = require("multischemase").CommandsEnum;
 
 var service = "service";
 var tenant = "teste";
