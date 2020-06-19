@@ -31,7 +31,7 @@ npm install
 ### Executar por linha de comando
 Para executar a migração por linha de comando, digite:
 ```
-node .\example\multischemase.js
+node .\multischemase.js
 ```
 
 #### Funcionalidades
@@ -45,20 +45,20 @@ node .\example\multischemase.js
 |validate|Valida migrações aplicadas com as encontradas (no sistema de arquivos ou classpath) para detectar alterações acidentais possibilitando que os schemas sejam criados exatamente como desejado.A validação falhará se:<br>- diferenças nos nomes das migrações, tipos or checksums encontrados<br>- versões aplicadas que não podem ser resolvidas localmente<br>- versões resolvidas que não foram aplicadas ainda|
 			 
 ## Configurações
-As configurações poderão ser realizas por arquivo JS ou JSON. Na pasta `conf` possui um exemplo em Postgres local de nome `config.js`. Pode ser alterado o nome ao realizar a alterando os parâmetros: 
-`configFolder`, `configFile` do método `exec()`. *NÃO UTILILIZAR CARACTERES ESPECIAIS*.
+As configurações poderão ser realizas por arquivo JS ou JSON. Na pasta `conf` possui um exemplo em Postgres local de nome `config.js`.<br> Pode ser alterado o valor dos seguintes parâmetros no objeto `Multischemase`: 
+`configFolder`, `configFile` no método `exec()`. *NÃO UTILIZAR CARACTERES ESPECIAIS*.<br>
 A função pede dois parâmetros:<br>
-O nome do aplicação ou serviço do seu projeto pela variável `service`;<br>
-O nome do tenant utilizado para acesso as informações do banco de dados pela variável `tenant`.
+ - O nome do aplicação ou serviço do seu projeto pela variável `service`;<br>
+ - O nome do tenant utilizado para acesso as informações do banco de dados pela variável `tenant`.
 Para configurar a conexão com o seu banco, altere as propriedades conforme abaixo:
 ```
-        flywayArgs: {
-            url: '<JDBC_BANCO_DADOS>' //ex:jdbc:postgresql://localhost/postgres,
-            ..,
-            user: '<NOME_DO_USUARIO_BANCO_DADOS>' //postgres,
-            password: '<SENHA_DO_USUARIO_BANCO_DADOS>' //postgres,
-           ...
-        }
+flywayArgs: {
+        url: '<JDBC_BANCO_DADOS>' //ex:jdbc:postgresql://localhost/postgres,
+        ..,
+        user: '<NOME_DO_USUARIO_BANCO_DADOS>' //postgres,
+        password: '<SENHA_DO_USUARIO_BANCO_DADOS>' //postgres,
+        ...
+}
 ```
 Os arquivos de migração devem ficar localizados na pasta `db/sql` e a extensão deles deverá ser `.pgsql`.
 Vide exemplo de arquivo em  `V0001__StartingOut.pgsql` que criará uma função de nome _next_id no schema public do seu banco Postgres. 

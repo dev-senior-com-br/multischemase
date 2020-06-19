@@ -6,7 +6,7 @@ module.exports = function(service, tenant) {
             schemas: service + '_' + tenant,
             locations: 'filesystem:db/sql',
             user: 'postgres',
-            password: 'admin',
+            password: 'postgres',
             sqlMigrationSuffixes: '.pgsql',
             baselineOnMigrate: true,
         },
@@ -27,7 +27,7 @@ module.exports = function(service, tenant) {
             version: '1.7.25'
         }],
         downloads: {
-            storageDirectory: '/test', // optional, the specific directory to store the flyway downloaded files. The directory must be writable by the node app process' user.
+            storageDirectory: '/home/lemoel/test', // optional, the specific directory to store the flyway downloaded files. The directory must be writable by the node app process' user.
             expirationTimeInMs: -1, // optional, -1 will never check for updates, defaults to 1 day.
         }
     };

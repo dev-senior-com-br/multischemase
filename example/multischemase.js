@@ -6,5 +6,5 @@ var tenant = "teste";
 var multischemase = new Multischemase(service, tenant);
 
 var command = CommandsEnum.MIGRATE;
-var configFolder = "conf";
+var configFolder = "../conf";
 multischemase.exec(command, configFolder);

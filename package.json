@@ -7,7 +7,7 @@
     "prebuild": "del-cli --force ./dist",
     "build": "tsc",
     "migrate": "flyway -configFiles=conf/flyway.js migrate",
-    "postbuild": "cpx **/*.ts ./dist && del-cli --force ./dist/node_modules && del-cli --force ./dist/examples",
+    "postbuild": "cpx '**/*.ts' ./dist && del-cli --force ./dist/node_modules && del-cli --force ./dist/examples",
     "format": "prettier --write \"lib/**/*.ts\" \"lib/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
     "test": "jest"
@@ -40,6 +40,10 @@
     "flywaydb-cli": "^0.8.3",
     "jest": "^26.0.1",
     "ts-jest": "^26.1.0",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.5",
+    "prebuild": "^10.0.0",
+    "prettier": "^1.19.1",
+    "tslint": "^6.1.0",
+    "tslint-config-prettier": "^1.18.0"
   }
 }
