@@ -1,17 +1,91 @@
-# Multischemase
+Multischemase
+================
 Multischemase é uma ferramenta de criação de banco de dados multi schemas e migração independente de estrutura para o Node.
+Este Wrapper irá realizar o download do último `cli` do `Flyway` e irá permitir realizar a migração com os seus scripts do seu projeto/pacote.
 
+## Instalação
+Atualmente em versão beta. Pode ser instalado através do comando:
+```
+npm i multischemase --save-dev
+```
+
+Para utilizar no projeto, importe as dependências em seu código javascript:
+```
+var Multischemase = require("multischemase").Multischemase;
+var CommandsEnum = require("multischemase").CommandsEnum;
+```
+
+## Dependências
+Esse projeto tem depêndencia de JAVA +1.8 e MAVEN devido ao `Flyway` e com variável de ambiente configurada JAVA_HOME.
+Também será necessário ter instalado o NPM e o Node para execução do mesmo.
+
+## Suporte
+Esse projeto poderá ser executado nos seguintes sistemas operacionais que estão testados: Windows 10, Linux e Mac OS X
+
+## Instalar
+Na raíz do projeto executar a linha de comando:
+```
+npm install
+```
+
+### Executar por linha de comando
+Para executar a migração por linha de comando, digite:
+```
+node .\multischemase.js
+```
+
+#### Funcionalidades
+|Parâmetro|Descrição|
+|-----|----|
+|migrate|Migra o schema para a última versão.O Flyway irá criar a tabela de metadata automaticamente se ela não existir.|
+|clean|Apaga todos objetos (tables, views, procedures, triggers, ...) nos schemas configurados. Os schemas são limpos na ordem especificadas pelas propriedades dos schemas.|
+|info|Imprime os detalhes e informações de status sobre todas as migrações.|
+|baseline|Baselines de um database existente, excluindo todas migrações executadas e incluidas em baselineVersion.|
+|repair|Repara a tabela de metadata do Flyway. Irá executar as seguintes ações:<br> - Remover qualquer migração falhada no banco de dados sem transação de DDL(Objetos do usuário deixados para trás dever ser limpos manualmente)<br> - Corrigir checksums incorretos|
+|validate|Valida migrações aplicadas com as encontradas (no sistema de arquivos ou classpath) para detectar alterações acidentais possibilitando que os schemas sejam criados exatamente como desejado.A validação falhará se:<br>- diferenças nos nomes das migrações, tipos or checksums encontrados<br>- versões aplicadas que não podem ser resolvidas localmente<br>- versões resolvidas que não foram aplicadas ainda|
+			 
+## Configurações
+As configurações poderão ser realizas por arquivo JS ou JSON. Na pasta `conf` possui um exemplo em Postgres local de nome `config.js`.<br> Pode ser alterado o valor dos seguintes parâmetros no objeto `Multischemase`: 
+`configFolder`, `configFile` no método `exec()`. *NÃO UTILIZAR CARACTERES ESPECIAIS*.<br>
+A função pede dois parâmetros:<br>
+ - O nome do aplicação ou serviço do seu projeto pela variável `service`;<br>
+ - O nome do tenant utilizado para acesso as informações do banco de dados pela variável `tenant`.
+Para configurar a conexão com o seu banco, altere as propriedades conforme abaixo:
+```
+flywayArgs: {
+        url: '<JDBC_BANCO_DADOS>' //ex:jdbc:postgresql://localhost/postgres,
+        ..,
+        user: '<NOME_DO_USUARIO_BANCO_DADOS>' //postgres,
+        password: '<SENHA_DO_USUARIO_BANCO_DADOS>' //postgres,
+        ...
+}
+```
+Os arquivos de migração devem ficar localizados na pasta `db/sql` e a extensão deles deverá ser `.pgsql`.
+Vide exemplo de arquivo em  `V0001__StartingOut.pgsql` que criará uma função de nome _next_id no schema public do seu banco Postgres. 
 
 ## Compilar o projeto
-
 O comando abaixo permite a transpilação/compilação do projeto:
 ```
 npm run build
 ```
 
 ## Testar o projeto
-
 Para executar os testes do projeto:
 ```
-npm t
+npm test
+```
+
+## Exemplo de uso
+Foi adicionado um exemplo de uso na pasta `example` com o arquivo `multischemase.js`
+Para executa-lo, altere o arquivo localizado na pasta `conf` de nome `config.js` com as configurações de banco de dados Postgres desejada.
+Realize a instalação das dependência do projeto com o comando abaixo na raíz do projeto:
+```
+npm i
+```
+
+Realize o build do projeto, conforme descrito no tópico de `Compilar o projeto`.
+
+Execute o comando para realizar a migração de exemplo em seu banco de dados com o scripts localizados em `db\sql`.
+```
+node .\examples\multischemase.js
 ```

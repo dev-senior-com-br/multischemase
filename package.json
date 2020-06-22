@@ -1,10 +1,15 @@
 {
   "name": "multischemase",
-  "version": "1.0.0",
+  "version": "1.0.1-beta.8",
   "description": "Multischemase é uma ferramenta de criação de banco de dados multi schemas e migração independente de estrutura para o Node.",
   "main": "dist/index.js",
-  "scripts": {
+   "scripts": {
+    "prebuild": "del-cli --force ./dist",
     "build": "tsc",
+    "migrate": "flyway -configFiles=conf/flyway.js migrate",
+    "postbuild": "cpx '**/*.ts' ./dist && del-cli --force ./dist/node_modules && del-cli --force ./dist/examples",
+    "format": "prettier --write \"lib/**/*.ts\" \"lib/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
     "test": "jest"
   },
   "repository": {
@@ -23,10 +28,26 @@
     "url": "https://github.com/dev-senior-com-br/multischemase/issues"
   },
   "homepage": "https://github.com/dev-senior-com-br/multischemase#readme",
+  "directories": {
+    "example": "examples",
+    "lib": "lib"
+  },
+  "dependencies": {
+    "@john.redd/node-flywaydb": "^3.0.3",
+    "aws-sdk": "2.368.0",
+    "umzug-typescript-helper": "1.0.9"
+  },
   "devDependencies": {
+    "@deboxsoft/cpx": "^1.5.0",
     "@types/jest": "^25.2.3",
+    "del-cli": "^3.0.1",
+    "flywaydb-cli": "^0.8.3",
     "jest": "^26.0.1",
     "ts-jest": "^26.1.0",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.5",
+    "prebuild": "^10.0.0",
+    "prettier": "^1.19.1",
+    "tslint": "^6.1.0",
+    "tslint-config-prettier": "^1.18.0"
   }
 }

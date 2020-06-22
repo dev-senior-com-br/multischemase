@@ -1,10 +1,25 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "lib": ["es2016"],
-    "sourceMap": true
+    "outDir": "./dist",
+    "allowJs": true,
+    "target": "es5",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "lib": [
+      "es5"
+    ],
+    "sourceMap": true,
+    "types": [
+      "node"
+    ],
+    "skipLibCheck": true,
   },
   "include": [
-    "src/**/*.ts"
+    "./lib/**/*",
+    "./index.ts"
+  ],
+  "exclude": [
+    "node_modules/*/**", "**/__tests__/*"
   ]
 }
