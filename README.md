@@ -87,5 +87,5 @@ Realize o build do projeto, conforme descrito no tópico de `Compilar o projeto`
 
 Execute o comando para realizar a migração de exemplo em seu banco de dados com o scripts localizados em `db\sql`.
 ```
-node .\example\multischemase.js
+node .\examples\multischemase.js
 ```

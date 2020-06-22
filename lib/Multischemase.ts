@@ -2,11 +2,12 @@ import pkg = require("../package.json");
 import path = require("path");
 import download = require("./download");
 import CommandsEnum = require("./CommandsEnum");
+import Strategy from "./Strategy";
 
 const { spawn } = require("child_process");
 let { program } = require("commander");
 
-export = class Multischemase {
+export = class Multischemase implements Strategy {
   private _service: string;
   private _tenant: string;
 
@@ -62,13 +63,17 @@ export = class Multischemase {
    * @param configFolder Pasta com arquivo de configuração de conexão do banco de dados. Não é necessário informar, utilizar por parão pasta `conf`.
    * @param configFile Nome do arquivo de configuração de conexão com o banco de dados. Não é necessário informar, utilizar por parão pasta `config.js`.
    */
-  public exec(cmd: string, configFolder = "conf", configFile = "config.js") {
+  public exec(cmd: string, configFolder:string, configFile:string): void {
     if (configFile == null) {
-      throw new Error("Nullable is not supported in configFile, use default value.");
+      throw new Error(
+        "Nullable is not supported in configFile, use default value."
+      );
     }
 
-    if(configFolder == null) {
-      throw new Error("Nullable is not supported in configFolder, use default value.");
+    if (configFolder == null) {
+      throw new Error(
+        "Nullable is not supported in configFolder, use default value."
+      );
     }
 
     let argv = process.argv;

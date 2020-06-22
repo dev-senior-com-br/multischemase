@@ -6,16 +6,20 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "lib": ["es2016"],
+    "lib": [
+      "es5"
+    ],
     "sourceMap": true,
     "types": [
-        "node"
+      "node"
     ],
-    "skipLibCheck": true
-},
+    "skipLibCheck": true,
+  },
   "include": [
     "./lib/**/*",
-    "./src/**/*",
     "./index.ts"
+  ],
+  "exclude": [
+    "node_modules/*/**", "**/__tests__/*"
   ]
 }
