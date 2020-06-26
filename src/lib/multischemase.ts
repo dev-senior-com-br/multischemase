@@ -30,8 +30,11 @@ export default class Multischemase {
   public list() {
     return this.connector.list();
   }
-  public setContext(context: IContext) {
-    this.contextSubs.next(context);
+  public setContext(service: string, tenant: string) {
+    this.setSchema(`${service}_${tenant}`);
+  }
+  public setSchema(schema: string) {
+    this.contextSubs.next({ schema });
   }
   public destroy() {
     this.contextSubs.complete();
