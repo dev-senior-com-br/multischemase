@@ -12,6 +12,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
+    "indent": ["error", 2],
     "linebreak-style": [
       "error",
       "unix"
@@ -30,7 +31,9 @@
     "arrow-parens": ["error", "as-needed"],
     "quotes": ["error", "single"],
     "array-bracket-spacing": ["error", "never"],
-    "object-curly-spacing": ["error", "always"]
+    "object-curly-spacing": ["error", "always"],
+    "no-empty-function": ["error", { "allow": ["constructors"] }],
+    "@typescript-eslint/no-empty-function": "off"
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
   }

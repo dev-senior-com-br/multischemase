@@ -11,4 +11,5 @@ export interface IConfig {
   client: ClientEnum;
   directory: string;
   fileType: FileTypeEnum;
+  fileRegex: RegExp;
 }

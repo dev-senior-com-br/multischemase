@@ -1,42 +1,32 @@
-import { Observable, Subscriber } from 'rxjs';
-import { IConfig, IContext, IConnector } from './interfaces';
+import { IConfig, IConnector } from './interfaces';
 import { ConnectorFactory } from './connectors';
 
 export default class Multischemase {
   private connectorFactory = ConnectorFactory.getInstance();
   private config: IConfig;
   private connector: IConnector;
-  private contextSubs!: Subscriber<IContext>;
-  private contextObs: Observable<IContext>;
   constructor(config: IConfig) {
-    this.contextObs = new Observable(subscriber => {
-      this.contextSubs = subscriber;
-    });
     this.config = config;
-    this.connector = this.connectorFactory.getConnector(
-      this.config,
-      this.contextObs
-    );
+    this.connector = this.connectorFactory.getConnector(this.config);
   }
-  public migrate() {
+  public migrate(): Promise<void> {
     return this.connector.migrate();
   }
-  public clean() {
+  public clean(): Promise<void> {
     return this.connector.clean();
   }
-  public current() {
+  public current(): Promise<string> {
     return this.connector.current();
   }
-  public list() {
+  public list(): Promise<string[]> {
     return this.connector.list();
   }
-  public setContext(service: string, tenant: string) {
-    this.setSchema(`${service}_${tenant}`);
+  public setContext(service: string, tenant: string): void;
+  public setContext(context: string, ...complements: string[]): void;
+  public setContext(...contexts: string[]): void {
+    this.connector.reload({ schema: contexts.join('_') });
   }
-  public setSchema(schema: string) {
-    this.contextSubs.next({ schema });
-  }
-  public destroy() {
-    this.contextSubs.complete();
+  public destroy(): void {
+    this.connector.destroy();
   }
 }

@@ -1,1 +1,1 @@
-export { ConnectorFactory } from "./connector-factory";
+export { ConnectorFactory } from './connector-factory';

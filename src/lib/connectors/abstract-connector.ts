@@ -1,16 +1,18 @@
 import { Observable, Subscription } from 'rxjs';
-import { IContext, IConfig } from '../interfaces';
+import { IContext, IConfig, IConnector } from '../interfaces';
 
-export abstract class AbstractConnector {
-  private contextObs!: Observable<IContext>;
+export abstract class AbstractConnector implements IConnector {
   protected config!: IConfig;
-  private contextSubs!: Subscription;
-  constructor(config: IConfig, contextObs: Observable<IContext>) {
-    this.contextObs = contextObs;
+  constructor(config: IConfig) {
     this.config = config;
-    this.contextSubs = this.contextObs.subscribe(this.reload);}
-  abstract reload(context: IContext): void;
-  public destroy() {
-    this.contextSubs.unsubscribe();
   }
+  abstract clean(): Promise<void>;
+  abstract current(): Promise<string>;
+  abstract list(): Promise<string[]>;
+  abstract migrate(): Promise<void>;
+  abstract reload(context: IContext): void;
+  public destroy(): void {
+    this.onDestroy();
+  }
+  abstract onDestroy(): void;
 }

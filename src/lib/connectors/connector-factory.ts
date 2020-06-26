@@ -1,10 +1,9 @@
-import { IConnector, IConfig, IContext } from '../interfaces';
-import { Observable } from 'rxjs';
+import { IConnector, IConfig } from '../interfaces';
 import { ConnectorResolver } from '../resolvers/connector-resolver';
 
 export class ConnectorFactory {
   private static instance: ConnectorFactory;
-  private constructor() { }
+  private constructor() {}
   private resolver: ConnectorResolver = new ConnectorResolver();
   public static getInstance(): ConnectorFactory {
     if (!ConnectorFactory.instance) {
@@ -13,12 +12,9 @@ export class ConnectorFactory {
     return ConnectorFactory.instance;
   }
 
-  public getConnector(
-    config: IConfig,
-    contextObs: Observable<IContext>
-  ): IConnector {
+  public getConnector(config: IConfig): IConnector {
     const { fileType, client } = config;
     const builder = this.resolver.resolve({ fileType, client });
-    return builder.setConfig(config).setContextObs(contextObs).build();
+    return builder.setConfig(config).build();
   }
 }

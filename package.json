@@ -4,14 +4,14 @@
   "description": "Multischemase é uma ferramenta de criação de banco de dados multi schemas e migração independente de estrutura para o Node.",
   "main": "./dist/index.js",
   "bin": {
-    "tscli": "./dist/index.js"
+    "multischemase": "./dist/cli/index.js"
   },
   "scripts": {
     "build": "rm dist -rf && tsc",
     "test": "npm run lint && npm run build",
     "prepublish": "npm run build",
     "start": "ts-node src/index.ts",
-    "lint": "eslint src/*",
+    "lint": "eslint src",
     "lint:fix": "npm run lint -- --fix"
   },
   "repository": {
@@ -48,7 +48,7 @@
   ],
   "dependencies": {
     "knex": "^0.21.1",
-    "rxjs": "^6.5.5"
+    "pg": "^8.2.1"
   },
   "jest": {
     "moduleFileExtensions": [
