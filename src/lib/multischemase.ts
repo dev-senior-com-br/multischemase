@@ -1,11 +1,21 @@
 import { IConfig, IConnector } from './interfaces';
 import { ConnectorFactory } from './connectors';
+import { ConfigResolver } from './resolvers/config-resolver';
 
 export default class Multischemase {
   private connectorFactory = ConnectorFactory.getInstance();
   private config: IConfig;
   private connector: IConnector;
-  constructor(config: IConfig) {
+  private configResolver = new ConfigResolver();
+  constructor(configFile: string);
+  constructor(config: IConfig);
+  constructor(conf: string | IConfig) {
+    let config: IConfig;
+    if(typeof conf === 'string') {
+      config = this.configResolver.resolve(conf);
+    } else {
+      config = conf as IConfig;
+    }
     this.config = config;
     this.connector = this.connectorFactory.getConnector(this.config);
   }
