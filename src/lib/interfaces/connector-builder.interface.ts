@@ -1,5 +1,5 @@
 import { IBuilder } from './builder.interface';
-import { IConfig } from './config.interface';
+import { Config } from './config.interface';
 export interface IConnectorBuilder<T> extends IBuilder<T> {
-    setConfig(config: IConfig): IConnectorBuilder<T>;
+    setConfig(config: Config): IConnectorBuilder<T>;
 }

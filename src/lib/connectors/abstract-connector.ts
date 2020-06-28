@@ -1,9 +1,10 @@
-import { Observable, Subscription } from 'rxjs';
-import { IContext, IConfig, IConnector } from '../interfaces';
+import { Config } from '../interfaces/config.interface';
+import { IConnector } from '../interfaces/connector.interface';
+import { IContext } from '../interfaces/context.interface';
 
 export abstract class AbstractConnector implements IConnector {
-  protected config!: IConfig;
-  constructor(config: IConfig) {
+  protected config!: Config;
+  constructor(config: Config) {
     this.config = config;
   }
   abstract clean(): Promise<void>;

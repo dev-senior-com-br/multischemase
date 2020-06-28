@@ -10,9 +10,9 @@
     "build": "rm dist -rf && tsc",
     "test": "npm run lint && npm run build",
     "prepublish": "npm run build",
-    "start": "ts-node src/index.ts",
     "lint": "eslint src",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "start": "npm run build && node examples/index.js"
   },
   "repository": {
     "type": "git",
@@ -47,6 +47,7 @@
     "dist/*"
   ],
   "dependencies": {
+    "comment-json": "^3.0.2",
     "knex": "^0.21.1",
     "pg": "^8.2.1"
   },

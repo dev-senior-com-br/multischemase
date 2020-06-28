@@ -1,5 +1,6 @@
-import { IConnector, IConfig } from '../interfaces';
 import { ConnectorResolver } from '../resolvers/connector-resolver';
+import { Config } from '../interfaces/config.interface';
+import { IConnector } from '../interfaces/connector.interface';
 
 export class ConnectorFactory {
   private static instance: ConnectorFactory;
@@ -12,8 +13,8 @@ export class ConnectorFactory {
     return ConnectorFactory.instance;
   }
 
-  public getConnector(config: IConfig): IConnector {
-    const { fileType, client } = config;
+  public getConnector(config: Config): IConnector {
+    const { migrationType: fileType, client } = config;
     const builder = this.resolver.resolve({ fileType, client });
     return builder.setConfig(config).build();
   }

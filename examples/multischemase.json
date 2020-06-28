@@ -1,0 +1,13 @@
+{
+  "connection": {                                               /* Connection defaults depends on database client */
+    // "host": "localhost",                                     /* Connection host */
+    // "port": 5432,                                            /* Connection port */
+    // "database": "postgres",                                  /* Connection database */
+    "user": "postgres",                                         /* Connection user */
+    "password": "postgres"                                      /* Connection password */
+  },
+  "directory": "examples/migrations",                               /* Migration directory to get migration files */
+  // "fileRegex": "^\\d+[\\w-]+\\.sql$",                        /* Regex to match sql files in migration directory */
+  // "migrationType": "sql",                                    /* Migration type.*/
+  // "client": "pg"                                             /* Database client type */
+}

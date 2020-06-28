@@ -1,4 +1,4 @@
 export enum ClientEnum {
   PG = 'pg',
-  MYSQL = 'mysql',
+  MYSQL = 'mysql'
 }

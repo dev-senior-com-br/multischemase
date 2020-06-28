@@ -1,9 +1,9 @@
 import { IConnectorBuilder } from '../interfaces/connector-builder.interface';
 import { KnexConnector } from '../connectors/knex-connector';
-import { IConfig } from '../interfaces/config.interface';
+import { Config } from '../interfaces/config.interface';
 export class KnexConnectorBuilder implements IConnectorBuilder<KnexConnector> {
-  private config!: IConfig;
-  setConfig(config: IConfig): IConnectorBuilder<KnexConnector> {
+  private config!: Config;
+  setConfig(config: Config): IConnectorBuilder<KnexConnector> {
     this.config = config;
     return this;
   }

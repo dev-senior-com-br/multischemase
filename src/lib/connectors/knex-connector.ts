@@ -1,10 +1,10 @@
-import { IContext } from '../interfaces';
 import { AbstractConnector } from './abstract-connector';
 import { KnexConnectorBuilder } from '../builders/knex-connector-builder';
 import Knex, { MigratorConfig } from 'knex';
 import { KnexConfigResolver } from '../resolvers/knex-config-resolver';
-import { FileTypeEnum } from '../enums';
 import { SQLMigrationSource } from './sql-migration-source';
+import { MigrationTypeEnum } from '../enums/migration-type.enum';
+import { IContext } from '../interfaces/context.interface';
 
 export class KnexConnector extends AbstractConnector {
   private knex!: Knex;
@@ -32,7 +32,7 @@ export class KnexConnector extends AbstractConnector {
 
   private getMigratorConfig(): MigratorConfig {
     const migratorConfig: MigratorConfig = {};
-    if (this.config.fileType === FileTypeEnum.KNEX) {
+    if (this.config.migrationType === MigrationTypeEnum.KNEX) {
       migratorConfig.directory = this.config.directory;
     } else {
       migratorConfig.migrationSource =
@@ -45,6 +45,7 @@ export class KnexConnector extends AbstractConnector {
     if (!this.knexConfig) {
       this.knexConfig = this.configResolver.resolve(this.config);
     }
+    if(this.knex) this.knex.destroy();
     this.knex = Knex({ ...this.knexConfig, searchPath: context.schema });
     this.schema = context.schema;
   }
