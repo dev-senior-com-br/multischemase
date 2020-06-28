@@ -1,4 +1,4 @@
-import { KnexMigrator } from './knex-migrator';
+import { KnexMigrator } from '.';
 import { Config } from '../../configuration';
 import { MigratorBuilder } from '..';
 export class KnexMigratorBuilder 

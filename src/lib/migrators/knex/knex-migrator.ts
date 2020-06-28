@@ -4,7 +4,7 @@ import Knex, { MigratorConfig } from 'knex';
 import { KnexConfigResolver } from '.';
 import { KnexSQLMigrationSource } from '.';
 import { Context, Config } from '../../configuration';
-import { ListInfo } from '../list-info.interface';
+import { ListInfo } from '..';
 
 export class KnexMigrator extends AbstractMigrator {
   private knex!: Knex;

@@ -1,5 +1,5 @@
 import { Context } from '../configuration';
-import { ListInfo } from './list-info.interface';
+import { ListInfo } from '.';
 
 export interface Migrator {
   clean(): Promise<void>;

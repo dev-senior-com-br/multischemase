@@ -1,8 +1,8 @@
-import { ConfigResolver } from './configuration';
+import { ConfigResolver, Logger } from './configuration';
 import { ConfigMultischemase, Config } from './configuration';
 import { Migrator } from './migrators';
 import { MigratorFactory } from './migrators';
-import { ListInfo } from './migrators/list-info.interface';
+import { ListInfo } from './migrators';
 
 export class Multischemase {
   #migratorFactory = MigratorFactory.getInstance();
@@ -32,9 +32,7 @@ export class Multischemase {
     return this.exec<ListInfo>(this.#migrator.list, this.#migrator);
   }
   private exec<T>(action: () => Promise<T>, thiz: Migrator): Promise<T> {
-    if(this.#connectionErr) {
-      throw new Error('Could not connect to DB: \n' + this.#connectionErr.stack);
-    }
+    this.checkConnection();
     this.checkLock();
     this.toggleLock();
     return action.call(thiz).finally(() => this.toggleLock());
@@ -60,4 +58,12 @@ export class Multischemase {
   private toggleLock(): void {
     this.#lock = !this.#lock;
   }
+  private checkConnection(): void {
+    if(this.#connectionErr) {
+      throw new Error('Could not connect to DB: \n' + this.#connectionErr.stack);
+    }
+  }
 }
+
+export { ConfigMultischemase };
+export { Logger };

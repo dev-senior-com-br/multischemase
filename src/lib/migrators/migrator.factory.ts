@@ -1,5 +1,5 @@
 import { MigratorResolver } from './migrator-resolver';
-import { Config } from '../configuration/config.interface';
+import { Config } from '../configuration';
 import { Migrator } from '.';
 
 export class MigratorFactory {
