@@ -1,10 +1,10 @@
-import { IContext } from './context.interface';
+import { Context } from '../configuration';
 
-export interface IConnector {
+export interface Migrator {
   clean(): Promise<void>;
   current(): Promise<string>;
   list(): Promise<string[]>;
   migrate(): Promise<void>;
   destroy(): void;
-  reload(context: IContext): void;
+  reload(context: Context): void;
 }

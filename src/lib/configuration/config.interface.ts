@@ -1,5 +1,5 @@
-import { MigrationTypeEnum } from '../enums/migration-type.enum';
-import { ClientEnum } from '../enums/client.enum';
+import { MigrationTypeEnum } from './migration-type.enum';
+import { ClientEnum } from './client.enum';
 
 export interface Config {
   connection?: {

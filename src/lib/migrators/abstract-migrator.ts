@@ -1,8 +1,8 @@
-import { Config } from '../interfaces/config.interface';
-import { IConnector } from '../interfaces/connector.interface';
-import { IContext } from '../interfaces/context.interface';
+import { Config } from '../configuration';
+import { Migrator } from '.';
+import { Context } from '../configuration';
 
-export abstract class AbstractConnector implements IConnector {
+export abstract class AbstractMigrator implements Migrator {
   protected config!: Config;
   constructor(config: Config) {
     this.config = config;
@@ -11,7 +11,7 @@ export abstract class AbstractConnector implements IConnector {
   abstract current(): Promise<string>;
   abstract list(): Promise<string[]>;
   abstract migrate(): Promise<void>;
-  abstract reload(context: IContext): void;
+  abstract reload(context: Context): void;
   public destroy(): void {
     this.onDestroy();
   }

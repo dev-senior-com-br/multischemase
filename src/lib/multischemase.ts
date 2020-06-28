@@ -1,12 +1,12 @@
-import { ConfigResolver } from './resolvers/config-resolver';
-import { ConfigMultischemase, Config } from './interfaces/config.interface';
-import { IConnector } from './interfaces/connector.interface';
-import { ConnectorFactory } from './connectors/connector-factory';
+import { ConfigResolver } from './configuration';
+import { ConfigMultischemase, Config } from './configuration';
+import { Migrator } from './migrators';
+import { MigratorFactory } from './migrators';
 
 export class Multischemase {
-  #connectorFactory = ConnectorFactory.getInstance();
+  #connectorFactory = MigratorFactory.getInstance();
   #config: Config;
-  #connector: IConnector;
+  #connector: Migrator;
   #configResolver = new ConfigResolver();
   #lock = false;
   constructor(configFile: string);
@@ -27,7 +27,7 @@ export class Multischemase {
   public list(): Promise<string[]> {
     return this.exec<string[]>(this.#connector.list, this.#connector);
   }
-  private exec<T>(action: () => Promise<T>, thiz: IConnector): Promise<T> {
+  private exec<T>(action: () => Promise<T>, thiz: Migrator): Promise<T> {
     this.checkLock();
     this.toggleLock();
     return action.call(thiz).finally(() => this.toggleLock());

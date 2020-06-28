@@ -1,12 +1,12 @@
-import { IResolver } from '../interfaces/resolver.interface';
+import { Resolver } from '../interfaces';
 import fs from 'fs';
 import { ConfigMultischemase, 
   ConfigParametersDefaults, 
-  Config } from '../interfaces/config.interface';
+  Config } from '.';
 import { parse } from 'comment-json';
 
 export class ConfigResolver 
-implements IResolver<Config, string | ConfigMultischemase> {
+implements Resolver<Config, string | ConfigMultischemase> {
   public resolve(params: string | ConfigMultischemase): Config {
     let config: Config = { ...ConfigParametersDefaults };
     if(typeof params === 'string') {

@@ -2,7 +2,7 @@ import Knex, { Migration } from 'knex';
 import fs from 'fs';
 import { join, basename } from 'path';
 
-export class SQLMigrationSource implements Knex.MigrationSource<string> {
+export class KnexSQLMigrationSource implements Knex.MigrationSource<string> {
 
   private directory: string;
   private regex: RegExp;

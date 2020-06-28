@@ -1,3 +1,3 @@
-export interface IResolver<T, K> {
+export interface Resolver<T, K> {
     resolve(params: K): T;
 }

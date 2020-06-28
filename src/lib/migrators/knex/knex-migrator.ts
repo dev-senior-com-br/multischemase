@@ -1,12 +1,12 @@
-import { AbstractConnector } from './abstract-connector';
-import { KnexConnectorBuilder } from '../builders/knex-connector-builder';
+import { AbstractMigrator } from '..';
+import { KnexMigratorBuilder } from '.';
 import Knex, { MigratorConfig } from 'knex';
-import { KnexConfigResolver } from '../resolvers/knex-config-resolver';
-import { SQLMigrationSource } from './sql-migration-source';
-import { MigrationTypeEnum } from '../enums/migration-type.enum';
-import { IContext } from '../interfaces/context.interface';
+import { KnexConfigResolver } from '.';
+import { KnexSQLMigrationSource } from '.';
+import { MigrationTypeEnum } from '../../configuration';
+import { Context } from '../../configuration';
 
-export class KnexConnector extends AbstractConnector {
+export class KnexMigrator extends AbstractMigrator {
   private knex!: Knex;
   private knexConfig!: Knex.Config;
   private configResolver = new KnexConfigResolver();
@@ -35,13 +35,15 @@ export class KnexConnector extends AbstractConnector {
     if (this.config.migrationType === MigrationTypeEnum.KNEX) {
       migratorConfig.directory = this.config.directory;
     } else {
-      migratorConfig.migrationSource =
-        new SQLMigrationSource(this.config.directory, this.config.fileRegex);
+      migratorConfig.migrationSource = new KnexSQLMigrationSource(
+        this.config.directory, 
+        this.config.fileRegex
+      );
     }
     return migratorConfig;
   }
 
-  reload(context: IContext): void {
+  reload(context: Context): void {
     if (!this.knexConfig) {
       this.knexConfig = this.configResolver.resolve(this.config);
     }
@@ -50,8 +52,8 @@ export class KnexConnector extends AbstractConnector {
     this.schema = context.schema;
   }
 
-  static builder(): KnexConnectorBuilder {
-    return new KnexConnectorBuilder();
+  static builder(): KnexMigratorBuilder {
+    return new KnexMigratorBuilder();
   }
 
   onDestroy(): void {
