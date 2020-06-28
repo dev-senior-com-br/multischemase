@@ -65,13 +65,13 @@ multischemase.migrate().then(() => console.log('migration finalized')).catch(err
 
 Todos os metodos de migração de base do `Multischemase` retornam promises. Caso tenha algumas dificuldades ou nunca trabalhou com promises, aqui vai alguns links para auxiliar: [Promises](https://developer.mozilla.org/pt-BR/docs/Learn/JavaScript/Asynchronous/Promises) e [async/await](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await).
 
-### Documentação
+## Documentação
 
-#### Multischemase
+### Multischemase
 
 Classe que controla e possui as funções de migrações de base multi schema.
 
-##### Construtor
+#### Construtor
 
 É possível passar o caminho de um arquivo de configuração (default é `multischemase.json`) ou um objeto de configuração do tipo [Config](#config_file).
 
@@ -80,31 +80,31 @@ new Multischemase('/var/home/multischemase.json');
 new Multischemase({"connection": {"user": "postgres","password": "postgres"}});
 ```
 
-##### Mecanismo de lock
+#### Mecanismo de lock
 
 Após executar uma das funções documentadas abaixo, a classe `Multischemase` checa se uma migration está sendo executada e caso estiver, ela bloqueia a ação atual soltando um erro.
 
-##### setContext
+#### setContext
 
 Metodo que define em qual [Contexto](#contexto) o `Multischemase` deve realizar as próximas migrações ou consultas de migração. Por default o [Contexto](#contexto) sempre vai ser atribuído em `lowerCase`.
 
-##### Migrate
+#### Migrate
 
 Realiza as migrações restantes com base no [Contexto](#contexto), na configuração de conexão da base e dos arquivos de migração. O `Knex` mantém no [Contexto](#contexto) as migrações já realizadas, assim ele consegue saber quais migrações que faltam serem feitas.
 
-##### Clean
+#### Clean
 
 Realiza um delete do [Contexto](#contexto), removendo todas tabelas, objetos, funções e etc.
 
-##### Current
+#### Current
 
 Mostra o nome da ultima migração executada no [Contexto](#contexto).
 
-##### List
+#### List
 
 Lista todas as migrações executadas e pendentes no [Contexto](#contexto).
 
-#### Contexto
+### Contexto
 
 Os contextos são como o `Multischemase` trata o multi schema. Cada schema é um contexto diferente, sempre que é modificado o contexto, é criado um novo objeto do `Knex` com uma nova conexão apontando para este schema. Uma instancia do [Multischemase](#multischemase) pode sempre trocar de contexto (Desde que não esteja nenhuma execução em andamento), porém só um contexto pode estar ativo por vez.
 
@@ -112,6 +112,6 @@ Todo contexto passado para o multischemase, será tratado como `lowerCase`.
 
 OBS: Não recomendamos que você tenha várias instancias de [Multischemase](#multischemase) apontando para vários contextos de uma unica base. Se você for trabalhar com uma única base, recomendamos utilizar uma unica instancia de [Multischemase](#multischemase).
 
-### Exemplos
+## Exemplos
 
 Dentro da pasta `examples` possui alguns exemplos de uso. Para testar basta ter um `postgres` local com user e pass como `postgres`. Para rodar basta executar `npm start`.
