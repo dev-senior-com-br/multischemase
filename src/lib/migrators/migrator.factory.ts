@@ -13,7 +13,7 @@ export class MigratorFactory {
     return MigratorFactory.instance;
   }
 
-  public getConnector(config: Config): Migrator {
+  public getMigrator(config: Config): Migrator {
     const { migrationType: fileType, client } = config;
     const builder = this.resolver.resolve({ fileType, client });
     return builder.setConfig(config).build();

@@ -1,5 +1,7 @@
 import { MigrationTypeEnum } from './migration-type.enum';
 import { ClientEnum } from './client.enum';
+import { Logger } from './logger.type';
+import { ConsoleLogger } from './logger';
 
 export interface Config {
   connection?: {
@@ -13,6 +15,7 @@ export interface Config {
   directory: string;
   migrationType: MigrationTypeEnum;
   fileRegex: RegExp;
+  log: Logger;
 }
 
 export interface ConfigMultischemase {
@@ -27,11 +30,13 @@ export interface ConfigMultischemase {
   directory?: string;
   migrationType?: MigrationTypeEnum;
   fileRegex?: RegExp;
+  log?: Logger;
 }
 
 export const ConfigParametersDefaults = {
   client: ClientEnum.PG,
   directory: './migrations',
   migrationType: MigrationTypeEnum.SQL,
-  fileRegex: /\d+[\w-]+\.sql$/
+  fileRegex: /\d+[\w-]+\.sql$/,
+  log: new ConsoleLogger()
 };

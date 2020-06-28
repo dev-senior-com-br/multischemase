@@ -12,7 +12,10 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    "indent": ["error", 2],
+    "indent": [
+      "error",
+      2
+    ],
     "linebreak-style": [
       "error",
       "unix"
@@ -20,7 +23,7 @@
     "max-len": [
       "error",
       {
-        "code": 80,
+        "code": 100,
         "tabWidth": 2
       }
     ],
@@ -28,12 +31,38 @@
       "error",
       "always"
     ],
-    "arrow-parens": ["error", "as-needed"],
-    "quotes": ["error", "single"],
-    "array-bracket-spacing": ["error", "never"],
-    "object-curly-spacing": ["error", "always"],
-    "no-empty-function": ["error", { "allow": ["constructors"] }],
-    "@typescript-eslint/no-empty-function": "off"
+    "arrow-parens": [
+      "error",
+      "as-needed"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "array-bracket-spacing": [
+      "error",
+      "never"
+    ],
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "no-empty-function": [
+      "error",
+      {
+        "allow": [
+          "constructors"
+        ]
+      }
+    ],
+    "@typescript-eslint/no-empty-function": "off",
+    "key-spacing": [
+      "error",
+      {
+        "beforeColon": false,
+        "afterColon": true
+      }
+    ]
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
   }

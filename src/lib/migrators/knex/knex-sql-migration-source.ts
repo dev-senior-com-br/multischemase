@@ -1,6 +1,6 @@
 import Knex, { Migration } from 'knex';
 import fs from 'fs';
-import { join, basename } from 'path';
+import { join } from 'path';
 
 export class KnexSQLMigrationSource implements Knex.MigrationSource<string> {
 
@@ -14,17 +14,23 @@ export class KnexSQLMigrationSource implements Knex.MigrationSource<string> {
   getMigration(migration: string): Migration {
     return {
       up: knex => {
-        return knex.raw(fs.readFileSync(migration,'utf-8'));
+        return knex.raw(fs.readFileSync(join(this.directory, migration),'utf-8'));
       },
       down: knex => knex.raw('select 1;'),
     };
   }
   getMigrationName(migration: string): string {
-    return basename(migration);
+    return migration;
   }
   async getMigrations(): Promise<string[]> {
-    return (await fs.promises.readdir(this.directory))
-      .filter(f => f.match(this.regex))
-      .map(f => join(this.directory, f));
+    const migrations = (await fs.promises.readdir(this.directory))
+      .filter(f => f.match(this.regex));
+    if(migrations.length === 0) {
+      throw new Error(
+        `No migration files found in directory ${join(process.cwd(), this.directory)}.` +
+        `Or no migration files mamatches the regex: /${this.regex}/`
+      );
+    }
+    return migrations;
   }
 }

@@ -4,6 +4,7 @@ import { ConfigMultischemase,
   ConfigParametersDefaults, 
   Config } from '.';
 import { parse } from 'comment-json';
+import { join } from 'path';
 
 export class ConfigResolver 
 implements Resolver<Config, string | ConfigMultischemase> {
@@ -11,7 +12,8 @@ implements Resolver<Config, string | ConfigMultischemase> {
     let config: Config = { ...ConfigParametersDefaults };
     if(typeof params === 'string') {
       if(!fs.existsSync(params)) {
-        throw new Error(`Cannot find configuration file: ${params}`);
+        throw new Error(`Cannot find configuration file in path ${join(process.cwd(), params)}.` +
+        'Please specify a valid configuration file.');
       }
       try {
         const json = parse(fs.readFileSync(params, 'utf-8'));
@@ -19,11 +21,17 @@ implements Resolver<Config, string | ConfigMultischemase> {
       } catch (error) {
         console.error(error.message, error.stack);
         throw new Error(
-          `Could not parse and read configuration file: ${params}`,
+          `Could not parse and read configuration file: ${join(process.cwd(), params)}`,
         );
       }
     } else {
       config = { ...config, ...params };
+    }
+    if(!fs.existsSync(config.directory)) {
+      throw new Error(
+        `Cannot find migrations directory on path ${join(process.cwd(), config.directory)}.` + 
+        'Please specify a valid migrations directory.'
+      );
     }
     return config;
   }

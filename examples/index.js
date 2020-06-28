@@ -8,9 +8,9 @@ const multischemase2 = new Multischemase('examples/multischemase.json');
 
 multischemase.checkLock();
 
-multischemase.setContext('test5', 'test4');
-multischemase2.setContext('test7', 'test4');
-multischemase2.migrate().then(()=> console.log('irrá'));
+multischemase.setContext('SERVICE', 'TENANT');
+multischemase2.setContext('XPTO', 'TEST');
+multischemase2.migrate().then(()=> console.log('irrá')).catch(err => console.error(err));
 multischemase.migrate().then(() => {
   return multischemase.list();
 }).then(list => {

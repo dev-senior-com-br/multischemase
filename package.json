@@ -8,11 +8,14 @@
   },
   "scripts": {
     "build": "rm dist -rf && tsc",
-    "test": "npm run lint && npm run build",
     "prepublish": "npm run build",
     "lint": "eslint src",
     "lint:fix": "npm run lint -- --fix",
-    "start": "npm run build && node examples/index.js"
+    "start": "npm run build && node examples/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "repository": {
     "type": "git",
@@ -39,9 +42,10 @@
     "eslint": "^7.3.1",
     "jest": "^26.0.1",
     "prettier": "2.0.5",
-    "supertest": "^4.0.2",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.5",
+    "ts-jest": "^26.1.0",
+    "tsconfig-paths": "^3.9.0"
   },
   "files": [
     "dist/*"

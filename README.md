@@ -86,7 +86,7 @@ Após executar uma das funções documentadas abaixo, a classe `Multischemase` c
 
 ##### setContext
 
-Metodo que define em qual [Contexto](#contexto) o `Multischemase` deve realizar as próximas migrações ou consultas de migração.
+Metodo que define em qual [Contexto](#contexto) o `Multischemase` deve realizar as próximas migrações ou consultas de migração. Por default o [Contexto](#contexto) sempre vai ser atribuído em `lowerCase`.
 
 ##### Migrate
 
@@ -98,15 +98,17 @@ Realiza um delete do [Contexto](#contexto), removendo todas tabelas, objetos, fu
 
 ##### Current
 
-Mostra o nome da ultima migração executada com sucesso no [Contexto](#contexto).
+Mostra o nome da ultima migração executada no [Contexto](#contexto).
 
 ##### List
 
-Lista todas as migrações executadas com sucesso no [Contexto](#contexto).
+Lista todas as migrações executadas e pendentes no [Contexto](#contexto).
 
 #### Contexto
 
 Os contextos são como o `Multischemase` trata o multi schema. Cada schema é um contexto diferente, sempre que é modificado o contexto, é criado um novo objeto do `Knex` com uma nova conexão apontando para este schema. Uma instancia do [Multischemase](#multischemase) pode sempre trocar de contexto (Desde que não esteja nenhuma execução em andamento), porém só um contexto pode estar ativo por vez.
+
+Todo contexto passado para o multischemase, será tratado como `lowerCase`.
 
 OBS: Não recomendamos que você tenha várias instancias de [Multischemase](#multischemase) apontando para vários contextos de uma unica base. Se você for trabalhar com uma única base, recomendamos utilizar uma unica instancia de [Multischemase](#multischemase).
 

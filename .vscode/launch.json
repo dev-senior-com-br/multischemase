@@ -5,11 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run TS Node",
+            "name": "Attach",
+            "port": 9229,
+            "request": "attach",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Run examples",
             "type": "node",
             "request": "launch",
             "args": [
-                "${workspaceFolder}/src/index.ts"
+                "${workspaceFolder}/examples/index.js"
             ],
             "runtimeArgs": [
                 "--nolazy",
