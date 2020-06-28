@@ -13,7 +13,7 @@ npm i @seniorsistemas/multischemase --save
 
 ### Configuração
 
-É necessário criar um arquivo de configuração do `Multischemase`. Por default a lib vai procurar pelo arquivo `multischemase.json` na raiz do projeto. 
+É necessário criar um arquivo de configuração do `Multischemase`. Por default a lib vai procurar pelo arquivo `multischemase.json` na raiz do projeto.
 
 #### Config file
 
@@ -82,7 +82,7 @@ new Multischemase({"connection": {"user": "postgres","password": "postgres"}});
 
 ##### Mecanismo de lock
 
-Após executar uma das funções documentadas abaixo, a classe `Multischemase` checa se uma migration está sendo executada e caso estiver, ela bloqueia a ação atual soltando um erro. 
+Após executar uma das funções documentadas abaixo, a classe `Multischemase` checa se uma migration está sendo executada e caso estiver, ela bloqueia a ação atual soltando um erro.
 
 ##### setContext
 
@@ -106,7 +106,7 @@ Lista todas as migrações executadas com sucesso no [Contexto](#contexto).
 
 #### Contexto
 
-Os contextos são como o `Multischemase` trata o multi schema. Cada schema é um contexto diferente, sempre que é modificado o contexto, é criado um novo objeto do `Knex` com uma nova conexão apontando para este schema. Uma instancia do [Multischemase](#multischemase) pode sempre trocar de contexto (Desde que não esteja nenhuma execução em andamento), porém só um contexto pode estar ativo por vez. 
+Os contextos são como o `Multischemase` trata o multi schema. Cada schema é um contexto diferente, sempre que é modificado o contexto, é criado um novo objeto do `Knex` com uma nova conexão apontando para este schema. Uma instancia do [Multischemase](#multischemase) pode sempre trocar de contexto (Desde que não esteja nenhuma execução em andamento), porém só um contexto pode estar ativo por vez.
 
 OBS: Não recomendamos que você tenha várias instancias de [Multischemase](#multischemase) apontando para vários contextos de uma unica base. Se você for trabalhar com uma única base, recomendamos utilizar uma unica instancia de [Multischemase](#multischemase).
 
