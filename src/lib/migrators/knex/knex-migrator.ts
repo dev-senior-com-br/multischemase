@@ -3,7 +3,6 @@ import { KnexMigratorBuilder } from '.';
 import Knex, { MigratorConfig } from 'knex';
 import { KnexConfigResolver } from '.';
 import { KnexSQLMigrationSource } from '.';
-import { MigrationTypeEnum } from '../../configuration';
 import { Context } from '../../configuration';
 
 export class KnexMigrator extends AbstractMigrator {
@@ -32,14 +31,15 @@ export class KnexMigrator extends AbstractMigrator {
 
   private getMigratorConfig(): MigratorConfig {
     const migratorConfig: MigratorConfig = {};
-    if (this.config.migrationType === MigrationTypeEnum.KNEX) {
-      migratorConfig.directory = this.config.directory;
-    } else {
-      migratorConfig.migrationSource = new KnexSQLMigrationSource(
-        this.config.directory, 
-        this.config.fileRegex
-      );
-    }
+    //TODO: Knex files compatibility
+    // if (this.config.migrationType === MigrationTypeEnum.KNEX) {
+    //   migratorConfig.directory = this.config.directory;
+    // } else {
+    migratorConfig.migrationSource = new KnexSQLMigrationSource(
+      this.config.directory, 
+      this.config.fileRegex
+    );
+    // }
     return migratorConfig;
   }
 

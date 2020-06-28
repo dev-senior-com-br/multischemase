@@ -1,4 +1,3 @@
 export enum MigrationTypeEnum {
-  SQL = 'sql',
-  KNEX = 'knex'
+  SQL = 'sql'
 }
