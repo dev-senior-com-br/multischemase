@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { Multischemase } = require('../dist/index');
+const {Multischemase} = require('../dist/index');
 
 const multischemase = 
   new Multischemase({ connection: { user: 'postgres', password: 'postgres' }, directory: 'examples/migrations' });

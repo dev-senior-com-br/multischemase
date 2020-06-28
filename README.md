@@ -44,13 +44,13 @@ O `Multischemase` vai procurar arquivos de migração no diretório que você in
 ES6 Modules:
 
 ```javascript
-import Multischemase from '@seniorsistemas/multischemase';
+import { Multischemase } from '@seniorsistemas/multischemase';
 ```
 
 CommonJS:
 
 ```javascript
-const Multischemase = require('@seniorsistemas/multischemase');
+const { Multischemase } = require('@seniorsistemas/multischemase');
 ```
 
 ### Executando

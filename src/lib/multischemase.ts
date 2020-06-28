@@ -1,4 +1,4 @@
-import { ConfigResolver, Logger } from './configuration';
+import { ConfigResolver } from './configuration';
 import { ConfigMultischemase, Config } from './configuration';
 import { Migrator } from './migrators';
 import { MigratorFactory } from './migrators';
@@ -64,6 +64,3 @@ export class Multischemase {
     }
   }
 }
-
-export { ConfigMultischemase };
-export { Logger };
