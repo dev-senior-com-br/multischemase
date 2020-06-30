@@ -27,7 +27,7 @@ multischemase.migrate().then(() => {
   multischemase.setContext('test', 'test', '2');
   return multischemase.migrate();
 }).then(() => {
-  console.log('deu boa7');
+  console.log('migrate realizadeo com sucesso');
   multischemase.setContext('test', 'test', '3');
   return multischemase.migrate();
 }).then(() => {
