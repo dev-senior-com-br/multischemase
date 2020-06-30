@@ -90,7 +90,7 @@ Metodo que define em qual [Contexto](#contexto) o `Multischemase` deve realizar 
 
 #### Migrate
 
-Realiza as migrações restantes com base no [Contexto](#contexto), na configuração de conexão da base e dos arquivos de migração. O `Knex` mantém no [Contexto](#contexto) as migrações já realizadas, assim ele consegue saber quais migrações que faltam serem feitas.
+Realiza as migrações restantes com base no [Contexto](#contexto), na configuração de conexão da base e dos arquivos de migração. O `Knex` mantém no [Contexto](#contexto) as migrações já realizadas, assim ele consegue saber quais migrações precisam ser executadas.
 
 #### Clean
 
