@@ -1,91 +1,142 @@
-Multischemase
-================
-Multischemase é uma ferramenta de criação de banco de dados multi schemas e migração independente de estrutura para o Node.
-Este Wrapper irá realizar o download do último `cli` do `Flyway` e irá permitir realizar a migração com os seus scripts do seu projeto/pacote.
+# @seniorsistemas/multischemase
+
+`Multischemase` é uma lib em node de migração de base multi schemas.
+Ela utiliza o `Knex` para realizar migrações de base com DDLs em formato sql.
 
 ## Instalação
-Atualmente em versão beta. Pode ser instalado através do comando:
-```
-npm i multischemase --save-dev
+
+```shell
+npm i @seniorsistemas/multischemase --save
 ```
 
-Para utilizar no projeto, importe as dependências em seu código javascript:
-```
-var Multischemase = require("multischemase").Multischemase;
-var CommandsEnum = require("multischemase").CommandsEnum;
-```
+## Utilização
 
-## Dependências
-Esse projeto tem depêndencia de JAVA +1.8 e MAVEN devido ao `Flyway` e com variável de ambiente configurada JAVA_HOME.
-Também será necessário ter instalado o NPM e o Node para execução do mesmo.
+### Configuração
 
-## Suporte
-Esse projeto poderá ser executado nos seguintes sistemas operacionais que estão testados: Windows 10, Linux e Mac OS X
+É necessário criar um arquivo de configuração do `Multischemase`. Por default a lib vai procurar pelo arquivo `multischemase.json` na raiz do projeto, porém é possível passar um JSON no formato [Config Json](#Config_json)
 
-## Instalar
-Na raíz do projeto executar a linha de comando:
-```
-npm install
-```
+#### Config file
 
-### Executar por linha de comando
-Para executar a migração por linha de comando, digite:
-```
-node .\multischemase.js
-```
+Json de exemplo utilizando configurações para o `postgres` e arquivos `.sql`, o que está comentado é default:
 
-#### Funcionalidades
-|Parâmetro|Descrição|
-|-----|----|
-|migrate|Migra o schema para a última versão.O Flyway irá criar a tabela de metadata automaticamente se ela não existir.|
-|clean|Apaga todos objetos (tables, views, procedures, triggers, ...) nos schemas configurados. Os schemas são limpos na ordem especificadas pelas propriedades dos schemas.|
-|info|Imprime os detalhes e informações de status sobre todas as migrações.|
-|baseline|Baselines de um database existente, excluindo todas migrações executadas e incluidas em baselineVersion.|
-|repair|Repara a tabela de metadata do Flyway. Irá executar as seguintes ações:<br> - Remover qualquer migração falhada no banco de dados sem transação de DDL(Objetos do usuário deixados para trás dever ser limpos manualmente)<br> - Corrigir checksums incorretos|
-|validate|Valida migrações aplicadas com as encontradas (no sistema de arquivos ou classpath) para detectar alterações acidentais possibilitando que os schemas sejam criados exatamente como desejado.A validação falhará se:<br>- diferenças nos nomes das migrações, tipos or checksums encontrados<br>- versões aplicadas que não podem ser resolvidas localmente<br>- versões resolvidas que não foram aplicadas ainda|
-			 
-## Configurações
-As configurações poderão ser realizas por arquivo JS ou JSON. Na pasta `conf` possui um exemplo em Postgres local de nome `config.js`.<br> Pode ser alterado o valor dos seguintes parâmetros no objeto `Multischemase`: 
-`configFolder`, `configFile` no método `exec()`. *NÃO UTILIZAR CARACTERES ESPECIAIS*.<br>
-A função pede dois parâmetros:<br>
- - O nome do aplicação ou serviço do seu projeto pela variável `service`;<br>
- - O nome do tenant utilizado para acesso as informações do banco de dados pela variável `tenant`.
-Para configurar a conexão com o seu banco, altere as propriedades conforme abaixo:
-```
-flywayArgs: {
-        url: '<JDBC_BANCO_DADOS>' //ex:jdbc:postgresql://localhost/postgres,
-        ..,
-        user: '<NOME_DO_USUARIO_BANCO_DADOS>' //postgres,
-        password: '<SENHA_DO_USUARIO_BANCO_DADOS>' //postgres,
-        ...
+```jsonc
+{
+  "connection": {                                               /* Connection defaults depends on database client */
+    // "host": "localhost",                                     /* Connection host */
+    // "port": 5432,                                            /* Connection port */
+    // "database": "postgres",                                  /* Connection database */
+    "user": "postgres",                                         /* Connection user */
+    "password": "postgres"                                      /* Connection password */
+  },
+  // "directory": "./migrations",                               /* Migration directory to get migration files */
+  // "fileRegex": "^\\d+[\\w-]+\\.sql$",                        /* Regex to match sql files in migration directory */
+  // "migrationType": "sql",                                    /* Migration type.*/
+  // "client": "pg"                                             /* Database client type */
 }
 ```
-Os arquivos de migração devem ficar localizados na pasta `db/sql` e a extensão deles deverá ser `.pgsql`.
-Vide exemplo de arquivo em  `V0001__StartingOut.pgsql` que criará uma função de nome _next_id no schema public do seu banco Postgres. 
 
-## Compilar o projeto
-O comando abaixo permite a transpilação/compilação do projeto:
-```
-npm run build
+#### Config json
+
+```javascript
+const multischemaseJson = {
+  "connection": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "postgres",
+    "user": "postgres",
+    "password": "postgres"
+  },
+  "directory": "./migrations",
+  "fileRegex": /^\\d+[\\w-]+\\.sql$/,
+  "migrationType": "sql",                                    /* Migration type.*/
+  "client": "pg",
+  "log": {
+    warn: (message) => console.log(message),
+    debug: (message) => console.log(message),
+    error: (message) => console.log(message)
+  }
+}
 ```
 
-## Testar o projeto
-Para executar os testes do projeto:
-```
-npm test
+
+
+### Migrações
+
+O `Multischemase` vai procurar arquivos de migração no diretório que você informar, porém por default ele vai procurar na pasta `migrations` na raiz do projeto. Esses arquivos de migração devem atender ao regex informado no arquivo `multischemase.json`, o regex default é: `^\d+[\w-]+\.sql$`. [Teste o regex](https://regex101.com/r/IAuURp/2/).
+
+### Importando
+
+ES6 Modules:
+
+```javascript
+import { Multischemase } from '@seniorsistemas/multischemase';
 ```
 
-## Exemplo de uso
-Foi adicionado um exemplo de uso na pasta `example` com o arquivo `multischemase.js`
-Para executa-lo, altere o arquivo localizado na pasta `conf` de nome `config.js` com as configurações de banco de dados Postgres desejada.
-Realize a instalação das dependência do projeto com o comando abaixo na raíz do projeto:
-```
-npm i
+CommonJS:
+
+```javascript
+const { Multischemase } = require('@seniorsistemas/multischemase');
 ```
 
-Realize o build do projeto, conforme descrito no tópico de `Compilar o projeto`.
+### Executando
 
-Execute o comando para realizar a migração de exemplo em seu banco de dados com o scripts localizados em `db\sql`.
+```javascript
+const multischemase = new Multischemase();
+multischemase.setContext('schemaprefix', 'schemasuffix');
+multischemase.migrate().then(() => console.log('migration finalized')).catch(err => console.error(err));
 ```
-node .\examples\multischemase.js
+
+### Trabalhando com promises
+
+Todos os metodos de migração de base do `Multischemase` retornam promises. Caso tenha algumas dificuldades ou nunca trabalhou com promises, aqui vai alguns links para auxiliar: [Promises](https://developer.mozilla.org/pt-BR/docs/Learn/JavaScript/Asynchronous/Promises) e [async/await](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await).
+
+## Documentação
+
+### Multischemase
+
+Classe que controla e possui as funções de migrações de base multi schema.
+
+#### Construtor
+
+É possível passar o caminho de um arquivo de configuração (default é `multischemase.json`) ou um objeto de configuração do tipo [Config](#config_file).
+
+```javascript
+new Multischemase('/var/home/multischemase.json');
+new Multischemase({"connection": {"user": "postgres","password": "postgres"}});
 ```
+
+#### Mecanismo de lock
+
+Após executar uma das funções documentadas abaixo, a classe `Multischemase` checa se uma migration está sendo executada e caso estiver, ela bloqueia a ação atual lançando um erro.
+
+#### setContext
+
+Metodo que define em qual [Contexto](#contexto) o `Multischemase` deve realizar as próximas migrações ou consultas de migração. Por default o [Contexto](#contexto) sempre vai ser atribuído em `lowerCase`.
+
+#### Migrate
+
+Realiza as migrações restantes com base no [Contexto](#contexto), na configuração de conexão da base e dos arquivos de migração. O `Knex` mantém no [Contexto](#contexto) as migrações já realizadas, assim ele consegue saber quais migrações precisam ser executadas.
+
+#### Clean
+
+Realiza o delete do [Contexto](#contexto), removendo todas as tabelas, objetos, funções e etc.
+
+#### Current
+
+Mostra o nome da ultima migração executada no [Contexto](#contexto).
+
+#### List
+
+Lista todas as migrações executadas e pendentes no [Contexto](#contexto).
+
+### Contexto
+
+Os contextos são como o `Multischemase` trata o multi schema. Cada schema é um contexto diferente para o `Multischemase`, sempre que é modificado o contexto através da função `setContext`, é criado um novo objeto do `Knex` com uma nova conexão apontando para este schema. Você pode sempre trocar o contexto de uma instancia do [Multischemase](#multischemase), desde que ele não esteja com nenhuma execução em andamento.
+
+Todo contexto passado para o multischemase, será tratado como `lowerCase`.
+
+OBS: Não recomendamos que você tenha várias instancias de [Multischemase](#multischemase) apontando para vários contextos de uma unica base. Se você for trabalhar com uma única base, recomendamos utilizar uma unica instancia de [Multischemase](#multischemase).
+
+## Exemplos
+
+Dentro da pasta `examples` possui alguns exemplos de uso. Para testar basta ter um `postgres` local com user e pass como `postgres`. Para rodar basta executar `npm start`. É possível mudar a configuração default dos exemplos alterando o arquivo `examples/multischemase.json`
