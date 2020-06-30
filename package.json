@@ -1,16 +1,18 @@
 {
-  "name": "multischemase",
-  "version": "1.0.1-beta.8",
+  "name": "@seniorsistemas/multischemase",
+  "version": "1.1.0-beta.1",
   "description": "Multischemase é uma ferramenta de criação de banco de dados multi schemas e migração independente de estrutura para o Node.",
-  "main": "dist/index.js",
-   "scripts": {
-    "prebuild": "del-cli --force ./dist",
-    "build": "tsc",
-    "migrate": "flyway -configFiles=conf/flyway.js migrate",
-    "postbuild": "cpx '**/*.ts' ./dist && del-cli --force ./dist/node_modules && del-cli --force ./dist/examples",
-    "format": "prettier --write \"lib/**/*.ts\" \"lib/**/*.js\"",
-    "lint": "tslint -p tsconfig.json",
-    "test": "jest"
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "del-cli dist && tsc",
+    "prepublish": "npm run build",
+    "lint": "eslint src",
+    "lint:fix": "npm run lint -- --fix",
+    "start": "npm run build && node examples/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "repository": {
     "type": "git",
@@ -22,32 +24,50 @@
     "agnostic",
     "migration"
   ],
-  "author": "André Rezende",
+  "author": "Wallace Reetz",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/dev-senior-com-br/multischemase/issues"
   },
   "homepage": "https://github.com/dev-senior-com-br/multischemase#readme",
-  "directories": {
-    "example": "examples",
-    "lib": "lib"
-  },
-  "dependencies": {
-    "@john.redd/node-flywaydb": "^3.0.3",
-    "aws-sdk": "2.368.0",
-    "umzug-typescript-helper": "1.0.9"
-  },
+  "types": "dist/index.d.ts",
   "devDependencies": {
-    "@deboxsoft/cpx": "^1.5.0",
     "@types/jest": "^25.2.3",
+    "@types/node": "^14.0.14",
+    "@typescript-eslint/eslint-plugin": "^3.4.0",
+    "@typescript-eslint/parser": "^3.4.0",
     "del-cli": "^3.0.1",
-    "flywaydb-cli": "^0.8.3",
+    "eslint": "^7.3.1",
     "jest": "^26.0.1",
+    "prettier": "2.0.5",
     "ts-jest": "^26.1.0",
-    "typescript": "^3.9.5",
-    "prebuild": "^10.0.0",
-    "prettier": "^1.19.1",
-    "tslint": "^6.1.0",
-    "tslint-config-prettier": "^1.18.0"
+    "ts-node": "^8.10.2",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.9.5"
+  },
+  "files": [
+    "dist/*"
+  ],
+  "dependencies": {
+    "comment-json": "^3.0.2",
+    "knex": "^0.21.1",
+    "pg": "^8.2.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
   }
 }
