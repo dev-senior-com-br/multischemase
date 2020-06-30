@@ -1,7 +1,7 @@
 # @seniorsistemas/multischemase
 
 `Multischemase` é uma lib em node de migração de base multi schemas.
-Ela utiliza o `Knex` para realizar migrações de base em formato sql.
+Ela utiliza o `Knex` para realizar migrações de base com DDLs em formato sql.
 
 ## Instalação
 
