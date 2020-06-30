@@ -1,4 +1,4 @@
-CREATE TABLE films (
+CREATE TABLE IF NOT EXISTS films (
     code        char(5),
     title       varchar(40),
     did         integer,
