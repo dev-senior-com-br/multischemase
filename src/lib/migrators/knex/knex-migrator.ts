@@ -1,10 +1,12 @@
-import { AbstractMigrator } from '..';
-import { KnexMigratorBuilder } from '.';
+import { AbstractMigrator } from '../abstract-migrator';
 import Knex, { MigratorConfig } from 'knex';
-import { KnexConfigResolver } from '.';
-import { KnexSQLMigrationSource } from '.';
-import { Context, Config } from '../../configuration';
-import { ListInfo } from '..';
+import { KnexConfigResolver } from './knex-config-resolver';
+import { Config } from '../../configuration/config.interface';
+import { ListInfo } from '../list-info.interface';
+import { KnexSQLMigrationSource } from './knex-sql-migration-source';
+import { KnexMigratorBuilder } from './knex-migrator-builder';
+import { Context } from '../../configuration/context.interface';
+
 
 export class KnexMigrator extends AbstractMigrator {
   private knex!: Knex;
@@ -73,7 +75,7 @@ export class KnexMigrator extends AbstractMigrator {
   }
 
   async testConnection(): Promise<void> {
-    const knexInstance = Knex({ ...this.knexConfig, acquireConnectionTimeout: 30 });
+    const knexInstance = Knex({ ...this.knexConfig });
     try {
       await knexInstance.raw('SELECT 1');
     } finally {

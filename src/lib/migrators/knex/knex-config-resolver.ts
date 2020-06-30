@@ -1,6 +1,7 @@
-import { Resolver } from '../../interfaces';
+import { Config } from '../../configuration/config.interface';
 import Knex from 'knex';
-import { Config } from '../../configuration';
+import { Resolver } from '../../interfaces/resolver.interface';
+
 export class KnexConfigResolver implements Resolver<Knex.Config, Config> {
   resolve(params: Config): Knex.Config {
     const { connection, client } = params;

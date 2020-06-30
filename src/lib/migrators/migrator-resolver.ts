@@ -1,9 +1,9 @@
-import { KnexMigrator } from './knex';
-import { Resolver } from '../interfaces';
-import { Migrator } from '.';
-import { MigratorBuilder } from '.';
-import { MigrationTypeEnum } from '../configuration';
-import { ClientEnum } from '../configuration';
+import { Resolver } from '../interfaces/resolver.interface';
+import { Migrator } from './migrator.interface';
+import { MigratorBuilder } from './migrator-builder.interface';
+import { MigrationTypeEnum } from '../configuration/migration-type.enum';
+import { ClientEnum } from '../configuration/client.enum';
+import { KnexMigrator } from './knex/knex-migrator';
 
 export class MigratorResolver
 implements Resolver<MigratorBuilder<Migrator>, ResolveParams> {

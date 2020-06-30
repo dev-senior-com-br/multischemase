@@ -1,7 +1,8 @@
-import { MigrationTypeEnum } from '.';
-import { ClientEnum } from '.';
-import { Logger } from '.';
-import { ConsoleLogger } from '.';
+import { ClientEnum } from './client.enum';
+import { MigrationTypeEnum } from './migration-type.enum';
+import { Logger } from './logger.type';
+import { ConsoleLogger } from './console-logger';
+
 
 export interface Config {
   connection?: {

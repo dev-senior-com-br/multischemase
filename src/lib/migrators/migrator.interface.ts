@@ -1,5 +1,5 @@
-import { Context } from '../configuration';
-import { ListInfo } from '.';
+import { ListInfo } from './list-info.interface';
+import { Context } from 'vm';
 
 export interface Migrator {
   clean(): Promise<void>;

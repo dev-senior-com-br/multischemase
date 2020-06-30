@@ -3,8 +3,9 @@
 const {Multischemase} = require('../dist/index');
 
 const multischemase = 
-  new Multischemase({ connection: { user: 'postgres', password: 'postgres' }, directory: 'examples/migrations' });
-const multischemase2 = new Multischemase('examples/multischemase.json');
+  new Multischemase('examples/multischemase.json');
+const multischemase2 = 
+  new Multischemase('examples/multischemase.json');
 
 multischemase.checkLock();
 

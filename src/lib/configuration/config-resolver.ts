@@ -1,10 +1,8 @@
-import { Resolver } from '../interfaces';
 import fs from 'fs';
-import { ConfigMultischemase, 
-  ConfigParametersDefaults, 
-  Config } from '.';
 import { parse } from 'comment-json';
 import { join } from 'path';
+import { Resolver } from '../interfaces/resolver.interface';
+import { Config, ConfigMultischemase, ConfigParametersDefaults } from './config.interface';
 
 export class ConfigResolver 
 implements Resolver<Config, string | ConfigMultischemase> {

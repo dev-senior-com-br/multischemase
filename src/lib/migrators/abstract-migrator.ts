@@ -1,7 +1,7 @@
-import { Config } from '../configuration';
-import { Migrator } from '.';
-import { Context } from '../configuration';
-import { ListInfo } from '.';
+import { Migrator } from './migrator.interface';
+import { Config } from '../configuration/config.interface';
+import { ListInfo } from './list-info.interface';
+import { Context } from '../configuration/context.interface';
 
 export abstract class AbstractMigrator implements Migrator {
   protected config!: Config;

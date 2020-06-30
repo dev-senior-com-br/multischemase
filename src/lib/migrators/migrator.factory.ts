@@ -1,6 +1,6 @@
 import { MigratorResolver } from './migrator-resolver';
-import { Config } from '../configuration';
-import { Migrator } from '.';
+import { Migrator } from './migrator.interface';
+import { Config } from '../configuration/config.interface';
 
 export class MigratorFactory {
   private static instance: MigratorFactory;

@@ -1,8 +1,8 @@
-import { ConfigResolver } from './configuration';
-import { ConfigMultischemase, Config } from './configuration';
-import { Migrator } from './migrators';
-import { MigratorFactory } from './migrators';
-import { ListInfo } from './migrators';
+import { MigratorFactory } from './migrators/migrator.factory';
+import { Config, ConfigMultischemase } from './configuration/config.interface';
+import { ConfigResolver } from './configuration/config-resolver';
+import { ListInfo } from './migrators/list-info.interface';
+import { Migrator } from './migrators/migrator.interface';
 
 export class Multischemase {
   #migratorFactory = MigratorFactory.getInstance();

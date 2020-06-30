@@ -1,6 +1,7 @@
-import { KnexMigrator } from '.';
-import { Config } from '../../configuration';
-import { MigratorBuilder } from '..';
+import { MigratorBuilder } from '../migrator-builder.interface';
+import { KnexMigrator } from './knex-migrator';
+import { Config } from '../../configuration/config.interface';
+
 export class KnexMigratorBuilder 
 implements MigratorBuilder<KnexMigrator> {
   private config!: Config;
