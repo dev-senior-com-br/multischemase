@@ -11,7 +11,7 @@ multischemase.checkLock();
 
 multischemase.setContext('SERVICE', 'TENANT');
 multischemase2.setContext('XPTO', 'TEST');
-multischemase2.migrate().then(()=> console.log('irrá')).catch(err => console.error(err));
+multischemase2.migrate().then(()=> console.log('migrate realizado com sucesso')).catch(err => console.error(err));
 multischemase.migrate().then(() => {
   return multischemase.list();
 }).then(list => {
