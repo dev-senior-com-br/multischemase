@@ -31,7 +31,7 @@ multischemase.migrate().then(() => {
   multischemase.setContext('test', 'test', '3');
   return multischemase.migrate();
 }).then(() => {
-  console.log('deu boa tudo');
+  console.log('todas migrações realizadas com sucesso');
 }).catch(err => {
   console.error(err);
 }).finally(() => {
