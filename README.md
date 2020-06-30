@@ -13,7 +13,7 @@ npm i @seniorsistemas/multischemase --save
 
 ### Configuração
 
-É necessário criar um arquivo de configuração do `Multischemase`. Por default a lib vai procurar pelo arquivo `multischemase.json` na raiz do projeto.
+É necessário criar um arquivo de configuração do `Multischemase`. Por default a lib vai procurar pelo arquivo `multischemase.json` na raiz do projeto, porém é possível passar um JSON no formato [Config Json](#Config_json)
 
 #### Config file
 
@@ -34,6 +34,31 @@ Json de exemplo utilizando configurações para o `postgres` e arquivos `.sql`, 
   // "client": "pg"                                             /* Database client type */
 }
 ```
+
+#### Config json
+
+```javascript
+const multischemaseJson = {
+  "connection": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "postgres",
+    "user": "postgres",
+    "password": "postgres"
+  },
+  "directory": "./migrations",
+  "fileRegex": /^\\d+[\\w-]+\\.sql$/,
+  "migrationType": "sql",                                    /* Migration type.*/
+  "client": "pg",
+  "log": {
+    warn: (message) => console.log(message),
+    debug: (message) => console.log(message),
+    error: (message) => console.log(message)
+  }
+}
+```
+
+
 
 ### Migrações
 
@@ -82,7 +107,7 @@ new Multischemase({"connection": {"user": "postgres","password": "postgres"}});
 
 #### Mecanismo de lock
 
-Após executar uma das funções documentadas abaixo, a classe `Multischemase` checa se uma migration está sendo executada e caso estiver, ela bloqueia a ação atual soltando um erro.
+Após executar uma das funções documentadas abaixo, a classe `Multischemase` checa se uma migration está sendo executada e caso estiver, ela bloqueia a ação atual lançando um erro.
 
 #### setContext
 
@@ -106,7 +131,7 @@ Lista todas as migrações executadas e pendentes no [Contexto](#contexto).
 
 ### Contexto
 
-Os contextos são como o `Multischemase` trata o multi schema. Cada schema é um contexto diferente, sempre que é modificado o contexto, é criado um novo objeto do `Knex` com uma nova conexão apontando para este schema. Uma instancia do [Multischemase](#multischemase) pode sempre trocar de contexto (Desde que não esteja nenhuma execução em andamento), porém só um contexto pode estar ativo por vez.
+Os contextos são como o `Multischemase` trata o multi schema. Cada schema é um contexto diferente para o `Multischemase`, sempre que é modificado o contexto através da função `setContext`, é criado um novo objeto do `Knex` com uma nova conexão apontando para este schema. Você pode sempre trocar o contexto de uma instancia do [Multischemase](#multischemase), desde que ele não esteja com nenhuma execução em andamento.
 
 Todo contexto passado para o multischemase, será tratado como `lowerCase`.
 

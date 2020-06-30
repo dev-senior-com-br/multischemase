@@ -7,7 +7,7 @@
     "multischemase": "./dist/cli/index.js"
   },
   "scripts": {
-    "build": "rm dist -rf && tsc",
+    "build": "del-cli dist && tsc",
     "prepublish": "npm run build",
     "lint": "eslint src",
     "lint:fix": "npm run lint -- --fix",
@@ -39,13 +39,14 @@
     "@types/node": "^14.0.14",
     "@typescript-eslint/eslint-plugin": "^3.4.0",
     "@typescript-eslint/parser": "^3.4.0",
+    "del-cli": "^3.0.1",
     "eslint": "^7.3.1",
     "jest": "^26.0.1",
     "prettier": "2.0.5",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.5",
     "ts-jest": "^26.1.0",
-    "tsconfig-paths": "^3.9.0"
+    "ts-node": "^8.10.2",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.9.5"
   },
   "files": [
     "dist/*"
