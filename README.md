@@ -119,7 +119,7 @@ Realiza as migrações restantes com base no [Contexto](#contexto), na configura
 
 #### Clean
 
-Realiza um delete do [Contexto](#contexto), removendo todas tabelas, objetos, funções e etc.
+Realiza o delete do [Contexto](#contexto), removendo todas as tabelas, objetos, funções e etc.
 
 #### Current
 
