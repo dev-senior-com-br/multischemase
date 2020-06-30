@@ -139,4 +139,4 @@ OBS: Não recomendamos que você tenha várias instancias de [Multischemase](#mu
 
 ## Exemplos
 
-Dentro da pasta `examples` possui alguns exemplos de uso. Para testar basta ter um `postgres` local com user e pass como `postgres`. Para rodar basta executar `npm start`.
+Dentro da pasta `examples` possui alguns exemplos de uso. Para testar basta ter um `postgres` local com user e pass como `postgres`. Para rodar basta executar `npm start`. É possível mudar a configuração default dos exemplos alterando o arquivo `examples/multischemase.json`
