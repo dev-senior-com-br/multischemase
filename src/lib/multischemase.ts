@@ -1,23 +1,20 @@
 import { MigratorFactory } from './migrators/migrator.factory';
-import { Config, ConfigMultischemase } from './configuration/config.interface';
+import { Config, MultischemaseConfiguration } from './configuration/config.interface';
 import { ConfigResolver } from './configuration/config-resolver';
 import { ListInfo } from './migrators/list-info.interface';
 import { Migrator } from './migrators/migrator.interface';
+import Knex from 'knex';
 
 export class Multischemase {
   #migratorFactory = MigratorFactory.getInstance();
   #config: Config;
-  #migrator: Migrator;
+  #migrator: Migrator<Knex>;
   #configResolver = new ConfigResolver();
   #lock = false;
   #connectionErr!: Error; 
-  constructor();
-  constructor(configFile: string);
-  constructor(config: ConfigMultischemase);
-  constructor(conf: string | ConfigMultischemase = 'multischemase.json') {
+  constructor(conf: MultischemaseConfiguration) {
     this.#config = this.#configResolver.resolve(conf);
     this.#migrator = this.#migratorFactory.getMigrator(this.#config);
-    this.#migrator.testConnection().catch(err => this.#connectionErr = err);
   }
   public migrate(): Promise<void> {
     return this.exec<void>(this.#migrator.migrate, this.#migrator);
@@ -31,7 +28,7 @@ export class Multischemase {
   public list(): Promise<ListInfo> {
     return this.exec<ListInfo>(this.#migrator.list, this.#migrator);
   }
-  private exec<T>(action: () => Promise<T>, thiz: Migrator): Promise<T> {
+  private exec<T>(action: () => Promise<T>, thiz: Migrator<Knex>): Promise<T> {
     this.checkConnection();
     this.checkLock();
     this.toggleLock();

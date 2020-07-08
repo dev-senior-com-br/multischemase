@@ -3,7 +3,7 @@ import { Config } from '../configuration/config.interface';
 import { ListInfo } from './list-info.interface';
 import { Context } from '../configuration/context.interface';
 
-export abstract class AbstractMigrator implements Migrator {
+export abstract class AbstractMigrator<T> implements Migrator<T> {
   protected config!: Config;
   constructor(config: Config) {
     this.config = config;
@@ -18,4 +18,5 @@ export abstract class AbstractMigrator implements Migrator {
   }
   abstract onDestroy(): void;
   abstract testConnection(): Promise<void>
+  abstract getClient(): T;
 }

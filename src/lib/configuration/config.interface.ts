@@ -2,16 +2,23 @@ import { ClientEnum } from './client.enum';
 import { MigrationTypeEnum } from './migration-type.enum';
 import { Logger } from './logger.type';
 import { ConsoleLogger } from './console-logger';
+import Knex from 'knex';
+import { ConfigTypeEnum } from './config-type.enum';
 
+export interface MultischemaseConfiguration {
+  type?: ConfigTypeEnum,
+  config?: ConfigMultischemase | Knex.Config
+  configFile?: string
+}
 
 export interface Config {
-  connection?: {
-    host?: string;
-    user?: string;
-    password?: string;
-    port?: number;
-    database?: string;
-  };
+  type: ConfigTypeEnum,
+  knex?: Knex.Config,
+  multischemase?: ConfigMultischemaseNonNullable
+}
+
+interface ConfigMultischemaseNonNullable {
+  connection?: ConnectionConfig;
   client: ClientEnum;
   directory: string;
   migrationType: MigrationTypeEnum;
@@ -19,14 +26,8 @@ export interface Config {
   log: Logger;
 }
 
-export interface ConfigMultischemase {
-  connection?: {
-    host?: string;
-    user?: string;
-    password?: string;
-    port?: number;
-    database?: string;
-  };
+interface ConfigMultischemase {
+  connection?: ConnectionConfig;
   client?: ClientEnum;
   directory?: string;
   migrationType?: MigrationTypeEnum;
@@ -34,7 +35,15 @@ export interface ConfigMultischemase {
   log?: Logger;
 }
 
-export const ConfigParametersDefaults = {
+interface ConnectionConfig {
+  host?: string;
+  user?: string;
+  password?: string;
+  port?: number;
+  database?: string;
+}
+
+export const ConfigMultischemaseParametersDefaults = {
   client: ClientEnum.PG,
   directory: './migrations',
   migrationType: MigrationTypeEnum.SQL,

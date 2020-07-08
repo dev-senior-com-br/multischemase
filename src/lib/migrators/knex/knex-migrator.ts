@@ -6,9 +6,10 @@ import { ListInfo } from '../list-info.interface';
 import { KnexSQLMigrationSource } from './knex-sql-migration-source';
 import { KnexMigratorBuilder } from './knex-migrator-builder';
 import { Context } from '../../configuration/context.interface';
+import { ConfigTypeEnum } from 'src/lib/configuration/config-type.enum';
 
 
-export class KnexMigrator extends AbstractMigrator {
+export class KnexMigrator extends AbstractMigrator<Knex> {
   private knex!: Knex;
   private knexConfig!: Knex.Config;
   private configResolver = new KnexConfigResolver();
@@ -48,15 +49,12 @@ export class KnexMigrator extends AbstractMigrator {
   private getMigratorConfig(): MigratorConfig {
     const migratorConfig: MigratorConfig = {};
     migratorConfig.schemaName = this.schema;
-    //TODO: Knex files compatibility
-    // if (this.config.migrationType === MigrationTypeEnum.KNEX) {
-    //   migratorConfig.directory = this.config.directory;
-    // } else {
-    migratorConfig.migrationSource = new KnexSQLMigrationSource(
-      this.config.directory, 
-      this.config.fileRegex
-    );
-    // }
+    if(this.config.type === ConfigTypeEnum.Multischemase && this.config.multischemase) {
+      migratorConfig.migrationSource = new KnexSQLMigrationSource(
+        this.config.multischemase.directory, 
+        this.config.multischemase.fileRegex
+      );
+    }
     return migratorConfig;
   }
 
@@ -81,5 +79,8 @@ export class KnexMigrator extends AbstractMigrator {
     } finally {
       knexInstance.destroy();
     }
+  }
+  getClient():Knex {
+    return this.knex;
   }
 }
