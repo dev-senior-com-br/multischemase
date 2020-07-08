@@ -5,7 +5,7 @@ import { Resolver } from '../interfaces/resolver.interface';
 import { 
   Config, 
   MultischemaseConfiguration, 
-  ConfigMultischemaseParametersDefaults 
+  ConfigMultischemaseDefaults 
 } from './config.interface';
 import { ConfigTypeEnum } from './config-type.enum';
 
@@ -43,7 +43,7 @@ implements Resolver<Config, MultischemaseConfiguration> {
         knex: config
       };
     } else if(params.type === ConfigTypeEnum.Multischemase) {
-      config = { ...ConfigMultischemaseParametersDefaults, ...config };
+      config = { ...ConfigMultischemaseDefaults, ...config };
       if(!fs.existsSync(config.directory)) {
         throw new Error(
           `Cannot find migrations directory on path ${join(process.cwd(), config.directory)}.` + 

@@ -1,33 +1,30 @@
-import { AbstractMigrator } from '../abstract-migrator';
 import Knex, { MigratorConfig } from 'knex';
-import { KnexConfigResolver } from './knex-config-resolver';
-import { Config } from '../../configuration/config.interface';
-import { ListInfo } from '../list-info.interface';
 import { KnexSQLMigrationSource } from './knex-sql-migration-source';
-import { KnexMigratorBuilder } from './knex-migrator-builder';
 import { Context } from '../../configuration/context.interface';
-import { ConfigTypeEnum } from 'src/lib/configuration/config-type.enum';
+import { ListInfo } from 'src/lib/interfaces/list-info.interface';
 
 
-export class KnexMigrator extends AbstractMigrator<Knex> {
+export class KnexMigrator {
   private knex!: Knex;
-  private knexConfig!: Knex.Config;
-  private configResolver = new KnexConfigResolver();
+  private config!: Knex.Config;
   private schema!: string;
+  private sql: boolean;
 
-  constructor(config: Config) {
-    super(config);
-    this.knexConfig = this.configResolver.resolve(this.config);
+  constructor(config: Knex.Config, sql = true) {
+    this.config = config;
+    this.sql = sql;
   }
 
   async clean(): Promise<void> {
-    const knexInstance = Knex({ ...this.knexConfig });
+    const knexInstance = Knex({ ...this.config });
     await knexInstance.raw(`DROP SCHEMA IF EXISTS ${this.schema} CASCADE;`);
     knexInstance.destroy();
   }
+
   current(): Promise<string> {
     return this.knex.migrate.currentVersion(this.getMigratorConfig());
   }
+
   async list(): Promise<ListInfo> {
     const list = await this.knex.migrate.list(this.getMigratorConfig());
     const listInfo: ListInfo = {
@@ -36,8 +33,9 @@ export class KnexMigrator extends AbstractMigrator<Knex> {
     };
     return listInfo;
   }
+  
   async migrate(): Promise<void> {
-    const knexInstance = Knex({ ...this.knexConfig });
+    const knexInstance = Knex({ ...this.config });
     try {
       await knexInstance.raw(`CREATE SCHEMA IF NOT EXISTS ${this.schema};`);  
     } finally {
@@ -49,31 +47,25 @@ export class KnexMigrator extends AbstractMigrator<Knex> {
   private getMigratorConfig(): MigratorConfig {
     const migratorConfig: MigratorConfig = {};
     migratorConfig.schemaName = this.schema;
-    if(this.config.type === ConfigTypeEnum.Multischemase && this.config.multischemase) {
-      migratorConfig.migrationSource = new KnexSQLMigrationSource(
-        this.config.multischemase.directory, 
-        this.config.multischemase.fileRegex
-      );
+    if(this.config.migrations?.directory) {
+      const regex = this.sql ? /\d+[\w-]+\.sql$/ : undefined;
+      migratorConfig.migrationSource = new KnexSQLMigrationSource(this.config.migrations.directory, regex);
     }
     return migratorConfig;
   }
 
   reload(context: Context): void {
     if(this.knex) this.knex.destroy();
-    this.knex = Knex({ ...this.knexConfig, searchPath: context.schema });
+    this.knex = Knex({ ...this.config, searchPath: context.schema });
     this.schema = context.schema;
   }
 
-  static builder(): KnexMigratorBuilder {
-    return new KnexMigratorBuilder();
-  }
-
-  onDestroy(): void {
+  destroy(): void {
     this.knex.destroy();
   }
 
   async testConnection(): Promise<void> {
-    const knexInstance = Knex({ ...this.knexConfig });
+    const knexInstance = Knex({ ...this.config });
     try {
       await knexInstance.raw('SELECT 1');
     } finally {
