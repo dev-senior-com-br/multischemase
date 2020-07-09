@@ -49,10 +49,9 @@
     "dist/*"
   ],
   "dependencies": {
-    "class-transformer": "^0.2.3",
     "comment-json": "^3.0.2",
     "knex": "^0.21.1",
-    "pg": "^8.2.1"
+    "pg": "^8.2.2"
   },
   "jest": {
     "moduleFileExtensions": [

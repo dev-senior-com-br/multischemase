@@ -5,9 +5,10 @@ module.exports = {
   staging: {
     client: 'postgresql',
     connection: {
-      database: 'localhost',
+      database: 'postgres',
       user:     'postgres',
-      password: 'postgres'
+      password: 'postgres',
+      host: 'localhost'
     },
     pool: {
       min: 2,
@@ -15,16 +16,17 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: 'migrations'
+      directory: 'examples/migrations'
     }
   },
 
   production: {
     client: 'postgresql',
     connection: {
-      database: 'localhost',
+      database: 'postgres',
       user:     'postgres',
-      password: 'postgres'
+      password: 'postgres',
+      host: 'localhost'
     },
     pool: {
       min: 2,
@@ -32,7 +34,7 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: 'migrations'
+      directory: 'examples/migrations'
     }
   }
 

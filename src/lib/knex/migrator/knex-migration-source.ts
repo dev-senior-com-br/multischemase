@@ -1,8 +1,8 @@
 import Knex, { Migration } from 'knex';
 import fs from 'fs';
-import { join, basename, extname } from 'path';
+import { join, basename, extname, isAbsolute } from 'path';
 
-export class KnexSQLMigrationSource implements Knex.MigrationSource<string> {
+export class KnexMigrationSource implements Knex.MigrationSource<string> {
 
   private directory: readonly string[];
   private regex?: RegExp;
@@ -20,15 +20,27 @@ export class KnexSQLMigrationSource implements Knex.MigrationSource<string> {
     return {
       up: async knex => {
         if(isSql) {
-          return (await import(migration)).up(knex);
+          return knex.raw(fs.readFileSync(migration, 'utf-8'));
         }
-        return knex.raw(fs.readFileSync(migration, 'utf-8'));
+        let pathToMigration;
+        if(isAbsolute(migration)) {
+          pathToMigration = migration;
+        } else {
+          pathToMigration = join(process.cwd(), migration);
+        }
+        return (await import(pathToMigration)).up(knex);
       },
       down: async knex => {
         if(isSql) {
-          return (await import(migration)).down(knex);
+          return knex.raw('select 1;');
         }
-        return knex.raw('select 1;')
+        let pathToMigration;
+        if(isAbsolute(migration)) {
+          pathToMigration = migration;
+        } else {
+          pathToMigration = join(process.cwd(), migration);
+        }
+        return (await import(pathToMigration)).down(knex);
       }
     };
   }
@@ -46,7 +58,7 @@ export class KnexSQLMigrationSource implements Knex.MigrationSource<string> {
       throw new Error(
         `No migration files found in directories '${this.directory.map(dir => join(process.cwd(), dir)).join('; ')}'.` +
         this.regex ? `Or no migration files matches the regex: /${this.regex}/` : '');
-      }
+    }
     return migrations;
   }
 }

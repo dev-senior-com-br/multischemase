@@ -1,11 +1,14 @@
 import { ListInfo } from '../interfaces/list-info.interface';
-import { Context } from '../configuration/context.interface';
+import { Context } from '../interfaces/context.interface';
+import Knex from 'knex';
+import { IMultischemase } from '../interfaces/multischemase.interface';
 
-export abstract class Multischemase<T> implements IMultischemase<T> {
-  #lock = false;
-  #destroyed = false;
+export abstract class Multischemase implements IMultischemase {
+  constructor(){}
+  private lock = false;
+  private destroyed = false;
   public abstract testConnection(): Promise<void>;
-  public abstract getClient(): Promise<T>;
+  public abstract getClient(): Knex;
   public migrate(): Promise<void> { return this.exec<void>(this.onMigrate); }
   public clean(): Promise<void> { return this.exec<void>(this.onClean); }
   public current(): Promise<string> { return this.exec<string>(this.onCurrent); }
@@ -15,7 +18,7 @@ export abstract class Multischemase<T> implements IMultischemase<T> {
   protected abstract onList(): Promise<ListInfo>;
   protected abstract onCurrent(): Promise<string>;
   private exec<M>(action: () => Promise<M>): Promise<M> {
-    if(this.#destroyed) {
+    if(this.destroyed) {
       throw new Error(
         'Multischemase already destroyed connection and objects.' +
         'Call `setContext` or create new Multischemase instance.'
@@ -27,11 +30,11 @@ export abstract class Multischemase<T> implements IMultischemase<T> {
   }
   public destroy(): void {
     this.onDestroy();
-    this.#destroyed = true;
+    this.destroyed = true;
   }
   protected abstract onDestroy(): void;
   private checkLock(): void {
-    if (this.#lock) {
+    if (this.lock) {
       throw new Error(
         'Wait for the last call to finalize. ' +
         'All actions return a promise, ' +
@@ -40,30 +43,17 @@ export abstract class Multischemase<T> implements IMultischemase<T> {
     }
   }
   private toggleLock(): void {
-    this.#lock = !this.#lock;
+    this.lock = !this.lock;
   }
   public setContext(service: string, tenant: string): void;
   public setContext(context: string, ...complements: string[]): void;
   public setContext(...contexts: string[]): void {
     this.checkLock();
-    this.#destroyed = false;
+    this.destroyed = false;
     this.onContextChange(this.normalizeContext({ schema: contexts.join('_') }));
   }
   protected normalizeContext({ schema }: Context): Context {
     return { schema: schema.toLowerCase() };
   }
   protected abstract onContextChange(context: Context): void;
-}
-
-export interface IMultischemase<T> {
-  setContext(service: string, tenant: string): void;
-  setContext(context: string, ...complements: string[]): void;
-  setContext(...contexts: string[]): void;
-  testConnection(): Promise<void>;
-  getClient(): Promise<T>;
-  migrate(): Promise<void>;
-  clean(): Promise<void>;
-  current(): Promise<string>;
-  list(): Promise<ListInfo>;
-  destroy(): void;
 }

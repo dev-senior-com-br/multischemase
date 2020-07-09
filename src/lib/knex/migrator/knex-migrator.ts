@@ -1,19 +1,21 @@
 import Knex, { MigratorConfig } from 'knex';
-import { KnexSQLMigrationSource } from './knex-sql-migration-source';
-import { Context } from '../../configuration/context.interface';
+import { KnexMigrationSource } from './knex-migration-source';
+import { Context } from '../../interfaces/context.interface';
 import { ListInfo } from 'src/lib/interfaces/list-info.interface';
+import { basename } from 'path';
 
 
 export class KnexMigrator {
   private knex!: Knex;
   private config!: Knex.Config;
   private schema!: string;
-  private sql: boolean;
+  private fileRegex!: RegExp;
 
-  constructor(config: Knex.Config, sql = true) {
+  constructor(config: Knex.Config) {
     this.config = config;
-    this.sql = sql;
   }
+
+  public setFileRegex(fileRegex: RegExp): void { this.fileRegex = fileRegex; }
 
   async clean(): Promise<void> {
     const knexInstance = Knex({ ...this.config });
@@ -21,15 +23,19 @@ export class KnexMigrator {
     knexInstance.destroy();
   }
 
-  current(): Promise<string> {
-    return this.knex.migrate.currentVersion(this.getMigratorConfig());
+  async current(): Promise<string> {
+    let curr = await this.knex.migrate.currentVersion(this.getMigratorConfig());
+    if(curr) {
+      curr = basename(curr);
+    }
+    return curr;
   }
 
   async list(): Promise<ListInfo> {
     const list = await this.knex.migrate.list(this.getMigratorConfig());
     const listInfo: ListInfo = {
-      migrated: list[0],
-      pending: list[1]
+      migrated: list[0].map((m:string) => basename(m)),
+      pending: list[1].map((m:string) => basename(m))
     };
     return listInfo;
   }
@@ -48,8 +54,7 @@ export class KnexMigrator {
     const migratorConfig: MigratorConfig = {};
     migratorConfig.schemaName = this.schema;
     if(this.config.migrations?.directory) {
-      const regex = this.sql ? /\d+[\w-]+\.sql$/ : undefined;
-      migratorConfig.migrationSource = new KnexSQLMigrationSource(this.config.migrations.directory, regex);
+      migratorConfig.migrationSource = new KnexMigrationSource(this.config.migrations.directory, this.fileRegex);
     }
     return migratorConfig;
   }

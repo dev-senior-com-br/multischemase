@@ -14,4 +14,10 @@ export class ConsoleLogger implements Logger {
   info(message: any): void {
     console.debug(message);
   }
+  warn(message: any): void {
+    console.warn(message);
+  }
+  deprecate(method: string, alternative: string): void {
+    console.warn(`Method deprecated '${method}'. Use ${alternative} instead.`);
+  }
 }

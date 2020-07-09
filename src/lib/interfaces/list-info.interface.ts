@@ -1,4 +1,4 @@
 export interface ListInfo {
-    migrated: string[],
-    pending: string[]
+  migrated: string[],
+  pending: string[]
 }

@@ -1,35 +1,49 @@
-import { Multischemase } from '../core/multischemase';
-import Knex from 'knex';
-import { Context } from '../configuration/context.interface';
-import { MultischemaseConfiguration } from '../configuration/config.interface';
-export class CustomKnexMultischemase extends Multischemase<Knex> {
-    constructor(configuration: MultischemaseConfiguration) {
-        super();
+import { KnexMultischemase } from './knex-multischemase';
+import { ConfigMultischemase, ConfigMultischemaseDefaults, Config } from '../interfaces/config.interface';
+import { existsSync, readFileSync } from 'fs';
+import { parse } from 'comment-json';
+import { join } from 'path';
+import { IMultischemase } from '../interfaces/multischemase.interface';
+export class CustomKnexMultischemase extends KnexMultischemase implements IMultischemase {
+  constructor(configuration: ConfigMultischemase | string) {
+    const config: Config = resolveConfig(configuration);
+    super({
+      connection: config.connection,
+      client: config.client,
+      log: config.log,
+      
+      migrations: {
+        directory: config.directory
+      }
+    });
+    this.migrator.setFileRegex(config.fileRegex);
+  }
+}
 
+function resolveConfig(configuration: ConfigMultischemase | string): Config {
+  let config: Config = { ...ConfigMultischemaseDefaults };
+  if(typeof configuration === 'string') {
+    if(!existsSync(configuration)) {
+      throw new Error(`Cannot find configuration file: ${join(process.cwd(), configuration)}.` +
+        'Please specify a valid configuration file.');
     }
-    public testConnection(): Promise<void> {
-        throw new Error("Method not implemented.");
+    try {
+      const json = parse(readFileSync(configuration, 'utf-8'));
+      config = { ...config, ...json }; 
+    } catch (error) {
+      console.error(error.message, error.stack);
+      throw new Error(
+        `Could not parse and read configuration file: ${join(process.cwd(), configuration)}`,
+      );
     }
-    public getClient(): Promise<Knex<any, unknown[]>> {
-        throw new Error("Method not implemented.");
+  } else {
+    config = { ...config, ...configuration };
+    if(!existsSync(config.directory)) {
+      throw new Error(
+        `Cannot find migrations directory on path ${join(process.cwd(), config.directory)}.` + 
+        'Please specify a valid migrations directory.'
+      );
     }
-    protected onMigrate(): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-    protected onList(): Promise<import("../interfaces/list-info.interface").ListInfo> {
-        throw new Error("Method not implemented.");
-    }
-    protected onCurrent(): Promise<string> {
-        throw new Error("Method not implemented.");
-    }
-    protected onDestroy(): void {
-        throw new Error("Method not implemented.");
-    }
-    protected onContextChange(context: Context): void {
-        throw new Error("Method not implemented.");
-    }
-    onClean():Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-
+  }
+  return config;
 }
