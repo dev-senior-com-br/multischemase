@@ -8,6 +8,7 @@ export interface Config {
   directory: string;
   fileRegex: RegExp;
   log: Logger;
+  tableName: string;
 }
 
 export interface ConfigMultischemase {
@@ -16,6 +17,7 @@ export interface ConfigMultischemase {
   directory?: string;
   fileRegex?: RegExp;
   log?: Logger;
+  tableName?: string;
 }
 
 interface ConnectionConfig {
@@ -30,5 +32,6 @@ export const ConfigMultischemaseDefaults = {
   client: ClientEnum.PG,
   directory: './migrations',
   fileRegex: /\d+[\w-]+\.sql$/,
-  log: new ConsoleLogger()
+  log: new ConsoleLogger(),
+  tableName: 'knex_migrations'
 };
