@@ -14,15 +14,14 @@ async function CustomCtor(
 }
 async function KnexCtor(
   knex: Knex | Knex.Config | string = 'knexfile.js', 
-  env?: string
+  env: string = process.env.NODE_ENV || 'development'
 ): Promise<Multischemase> {
   let config = knex;
   if(typeof config === 'string') {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const knexfile: any = await import(join(process.cwd(), config));
-    if(env) {
-      config = knexfile[env];
-    } else {
+    config = knexfile[env];
+    if(!config) {
       config = knexfile;
     }
     config = (config as Knex.Config);

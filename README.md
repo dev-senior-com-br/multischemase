@@ -6,18 +6,28 @@ Ela utiliza o `Knex` para realizar migrações de base com DDLs em formato sql.
 ## Instalação
 
 ```shell
-npm i @seniorsistemas/multischemase --save
+$ npm i @seniorsistemas/multischemase --save
+```
+
+Também é necessário instalar a lib do banco de dados que você vai utilizar no multischemase:
+```shell
+$ npm install pg
+$ npm install sqlite3 # not tested
+$ npm install mysql # not tested
+$ npm install mysql2 # not tested
+$ npm install oracledb # not tested
+$ npm install mssql # not tested
 ```
 
 ## Utilização
 
 ### Configuração
 
-É necessário criar um arquivo de configuração do `Multischemase`. Por default a lib vai procurar pelo arquivo `multischemase.json` na raiz do projeto, porém é possível passar um JSON no formato [Config Json](#Config_json)
+Para configurar há várias maneiras, com json, passando caminho de arquivo e passando um cliend do `Knex`. Vou listar abaixo as formas de configuração:
 
 #### Config file
 
-Json de exemplo utilizando configurações para o `postgres` e arquivos `.sql`, o que está comentado é default:
+Arquivo de configuração em formato de `json`. O caminho deste arquivo pode ser passado na função [Custom](custom).
 
 ```jsonc
 {
@@ -30,12 +40,13 @@ Json de exemplo utilizando configurações para o `postgres` e arquivos `.sql`, 
   },
   // "directory": "./migrations",                               /* Migration directory to get migration files */
   // "fileRegex": "^\\d+[\\w-]+\\.sql$",                        /* Regex to match sql files in migration directory */
-  // "migrationType": "sql",                                    /* Migration type.*/
   // "client": "pg"                                             /* Database client type */
 }
 ```
 
 #### Config json
+
+Json de configuração. Este `json` pode ser passado na função [Custom](custom).
 
 ```javascript
 const multischemaseJson = {
@@ -48,7 +59,6 @@ const multischemaseJson = {
   },
   "directory": "./migrations",
   "fileRegex": /^\\d+[\\w-]+\\.sql$/,
-  "migrationType": "sql",                                    /* Migration type.*/
   "client": "pg",
   "log": {
     warn: (message) => console.log(message),
@@ -58,32 +68,42 @@ const multischemaseJson = {
 }
 ```
 
+#### Knexfile
 
+Arquivo de configuração default do `Knex`. Exemplo no próprio site da documentação do [Knex](http://knexjs.org/#Installation-client). O caminho do `knexfile.js` pode ser passado por parametro na função [Knex](knex).
+
+#### Knex json
+
+Json de configuração do `Knex`. Segue a mesma estrutura do `knexfile.js`, porém já transformado em `json`. Pode ser passado por parametro na função [Knex](knex).
+
+#### Knex client
+
+Também é possivel passar um client do `Knex` para o multischemase, para que seja criado um novo client do `Knex` utilizando a configuração inicial do `Knex` informado por parametro. Deve se usar a função [Knex](knex).
 
 ### Migrações
 
-O `Multischemase` vai procurar arquivos de migração no diretório que você informar, porém por default ele vai procurar na pasta `migrations` na raiz do projeto. Esses arquivos de migração devem atender ao regex informado no arquivo `multischemase.json`, o regex default é: `^\d+[\w-]+\.sql$`. [Teste o regex](https://regex101.com/r/IAuURp/2/).
+O `Multischemase` vai procurar arquivos de migração no diretório que você informar, porém por default ele vai procurar na pasta `migrations` na raiz do projeto. Esses arquivos de migração devem atender ao regex informado no arquivo `multischemase.json`, o regex default é: `^\d+[\w-]+\.sql$`. No caso de passar um arquivo no formato `knexfile.js`, o regex será ignorado.  [Teste o regex](https://regex101.com/r/IAuURp/2/).
 
 ### Importando
 
 ES6 Modules:
 
 ```javascript
-import { Multischemase } from '@seniorsistemas/multischemase';
+import Multischemase from '@seniorsistemas/multischemase';
 ```
 
 CommonJS:
 
 ```javascript
-const { Multischemase } = require('@seniorsistemas/multischemase');
+const Multischemase = require('@seniorsistemas/multischemase');
 ```
 
 ### Executando
 
 ```javascript
-const multischemase = new Multischemase();
+const multischemase = Multischemase.Custom();
 multischemase.setContext('schemaprefix', 'schemasuffix');
-multischemase.migrate().then(() => console.log('migration finalized')).catch(err => console.error(err));
+multischemase.migrate().then(() => console.log('migration finalized')).catch(err => console.error(err)).finally(() => multischemase.destroy());
 ```
 
 ### Trabalhando com promises
@@ -92,18 +112,96 @@ Todos os metodos de migração de base do `Multischemase` retornam promises. Cas
 
 ## Documentação
 
+### Custom
+
+Metodo assincrono que gera uma instancia de [Multischemase](multischemase). Pode receber por parâmetro um [json](config_json) ou uma string com o caminho para o [arquivo de configuração](config_file). Se não for informado nenhum parâmetro a função irá procurar pelo arquivo `multischemase.json`.
+
+Exemplos:
+
+```javascript
+const Multischemase = require('@seniorsistemas/multischemase');
+
+//Example 1
+Multischemase.Custom('examples/multischemase.json').then(multischemase => {
+  multischemase.setContext('servicename1', 'tenantname1');
+  return multischemase.migrate();
+}).finally(multischemase.destroy);
+
+
+//Example 2
+const config = {
+  connection: {
+    host: 'localhost',
+    user: 'postgres',
+    password: 'postgres'
+  },
+  client: 'pg'
+};
+Multischemase.Custom(config).then(multischemase => {
+  multischemase.setContext('servicename2', 'tenantname2');
+  return multischemase.migrate();
+}).finally(multischemase.destroy);
+
+//Example 3
+Multischemase.Custom().then(multischemase => {
+  multischemase.setContext('servicename1', 'tenantname1');
+  return multischemase.migrate();
+}).finally(multischemase.destroy);
+```
+
+### Knex
+
+Metodo assincrono que gera uma instancia de [Multischemase](multischemase). Pode receber por parâmetro uma string contendo o caminho do [knexfile.js](knexfile), um [json](knex_json) ou um [client do knex](knex_client). Se não informado nenhum parâmetro a função irá procurar pelo arquivo `knexfile.js`. Em casos em que é informado o caminho do `knexfile`, também pode se informar a `env` a ser utilizada, por default é utilizado o padrão: `process.env.NODE_ENV || 'development'`.
+
+Exemplos:
+
+```javascript
+const Multischemase = require('@seniorsistemas/multischemase');
+const Knex = require('knex');
+
+//Example 1
+Multischemase.Knex('examples/knexfile.js', 'staging').then(multischemase => {
+  multischemase.setContext('servicename1', 'tenantname1');
+  return multischemase.migrate();
+}).finally(multischemase.destroy);
+
+
+//Example 2
+const config = {
+  connection: {
+    host: 'localhost',
+    user: 'postgres',
+    password: 'postgres'
+  },
+  client: 'pg',
+  migrations: {
+    directory: 'examples/migrations'
+  }
+};
+Multischemase.Knex(config).then(multischemase => {
+  multischemase.setContext('servicename2', 'tenantname2');
+  return multischemase.migrate();
+}).finally(multischemase.destroy);
+
+//Example 3
+
+const knex = KnexLib();
+Multischemase.Knex(knex).then(multischemase => {
+  multischemase.setContext('servicename2', 'tenantname2');
+  return multischemase.migrate();
+}).finally(multischemase.destroy);
+
+//Example 4
+
+Multischemase.Knex().then(multischemase => {
+  multischemase.setContext('servicename2', 'tenantname2');
+  return multischemase.migrate();
+}).finally(multischemase.destroy);
+```
+
 ### Multischemase
 
 Classe que controla e possui as funções de migrações de base multi schema.
-
-#### Construtor
-
-É possível passar o caminho de um arquivo de configuração (default é `multischemase.json`) ou um objeto de configuração do tipo [Config](#config_file).
-
-```javascript
-new Multischemase('/var/home/multischemase.json');
-new Multischemase({"connection": {"user": "postgres","password": "postgres"}});
-```
 
 #### Mecanismo de lock
 
@@ -128,6 +226,14 @@ Mostra o nome da ultima migração executada no [Contexto](#contexto).
 #### List
 
 Lista todas as migrações executadas e pendentes no [Contexto](#contexto).
+
+#### Destroy
+
+Após executar o multischemase e após ter a certeza de que nao sera mais executado nenhuma função do mesmo, deve se destruir o objeto. Chamando a função `.destroy()`
+
+#### getClient
+
+Método que retorna a instancia do `Knex` com o schema atribuído.
 
 ### Contexto
 
