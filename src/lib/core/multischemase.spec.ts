@@ -113,19 +113,6 @@ describe('Multischemase', () => {
       expect(spyOnDestroy).toHaveBeenCalledTimes(1);
       expect(spyOnMigrate).not.toHaveBeenCalled();
     });
-    it('checkLocked', () => {
-      //Arrange
-      jest.spyOn<any, string>(testMultischemase, 'migrate')
-        .mockImplementation(() => testMultischemase['lock'] = true);
-      jest.spyOn<any, string>(testMultischemase, 'onList')
-        .mockReturnValue(undefined);
-      //Act
-      testMultischemase.setContext('test1', 'teste2');
-      testMultischemase.migrate();
-      const catchThrowable = expect(() => testMultischemase.list());
-      //Assert
-      catchThrowable.toThrow();
-    });
     it('CheckContexted', () => {
       //Arrange
       const spyOnMigrate = jest.spyOn<any, string>(testMultischemase, 'onMigrate')

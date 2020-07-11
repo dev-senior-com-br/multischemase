@@ -5,7 +5,6 @@ import { IMultischemase } from '../interfaces/multischemase.interface';
 
 export abstract class Multischemase implements IMultischemase {
   constructor(){}
-  private lock = false;
   private destroyed = false;
   private contexted = false;
   public abstract testConnection(): Promise<void>;
@@ -21,27 +20,13 @@ export abstract class Multischemase implements IMultischemase {
   private exec<M>(action: () => Promise<M>): Promise<M> {
     this.checkDestroyed();
     this.checkContexted();
-    this.checkLocked();
-    this.toggleLock();
-    return action.call(this).finally(() => this.toggleLock());
+    return action.call(this);
   }
   public destroy(): void {
     this.onDestroy();
     this.destroyed = true;
   }
   protected abstract onDestroy(): void;
-  private toggleLock(): void {
-    this.lock = !this.lock;
-  }
-  private checkLocked(): void {
-    if (this.lock) {
-      throw new Error(
-        'Wait for the last call to finalize. ' +
-        'All actions return a promise, ' +
-        'wait the action end to call another action or to change context.'
-      );
-    }
-  }
   private checkContexted(): void {
     if(!this.contexted) {
       throw new Error('No context setted, please call setContext before.');
@@ -58,7 +43,6 @@ export abstract class Multischemase implements IMultischemase {
   public setContext(service: string, tenant: string): void;
   public setContext(context: string, ...complements: string[]): void;
   public setContext(...contexts: string[]): void {
-    this.checkLocked();
     this.destroyed = false;
     this.contexted = true;
     this.onContextChange(this.normalizeContext({ schema: contexts.join('_') }));
