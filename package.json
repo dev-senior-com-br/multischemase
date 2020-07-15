@@ -1,6 +1,6 @@
 {
   "name": "@seniorsistemas/multischemase",
-  "version": "1.1.0-beta.1",
+  "version": "1.1.0-SNAPSHOT-3",
   "description": "Multischemase é uma ferramenta de criação de banco de dados multi schemas e migração independente de estrutura para o Node.",
   "main": "./dist/index.js",
   "scripts": {
@@ -39,6 +39,7 @@
     "del-cli": "^3.0.1",
     "eslint": "^7.3.1",
     "jest": "^26.0.1",
+    "pg": "^8.3.0",
     "prettier": "2.0.5",
     "ts-jest": "^26.1.0",
     "ts-node": "^8.10.2",
@@ -50,8 +51,7 @@
   ],
   "dependencies": {
     "comment-json": "^3.0.2",
-    "knex": "^0.21.1",
-    "pg": "^8.2.2"
+    "knex": "^0.21.1"
   },
   "jest": {
     "moduleFileExtensions": [

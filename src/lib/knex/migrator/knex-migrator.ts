@@ -10,12 +10,14 @@ export class KnexMigrator {
   private config!: Knex.Config;
   private schema!: string;
   private fileRegex!: RegExp;
+  private directory!: string;
 
   constructor(config: Knex.Config) {
     this.config = config;
   }
 
   public setFileRegex(fileRegex: RegExp): void { this.fileRegex = fileRegex; }
+  public setDirectory(directory: string): void { this.directory = directory; }
 
   async clean(): Promise<void> {
     const knexInstance = Knex({ ...this.config });
@@ -53,14 +55,18 @@ export class KnexMigrator {
   private getMigratorConfig(): MigratorConfig {
     const migratorConfig: MigratorConfig = {};
     migratorConfig.schemaName = this.schema;
-    if(this.config.migrations?.directory) {
-      migratorConfig.migrationSource = new KnexMigrationSource(this.config.migrations.directory, this.fileRegex);
+    migratorConfig.disableTransactions = true;
+    if(this.directory) {
+      migratorConfig.migrationSource = new KnexMigrationSource(this.directory, this.fileRegex);
     }
     return migratorConfig;
   }
 
   reload(context: Context): void {
     if(this.knex) this.knex.destroy();
+    if(this.config.migrations) {
+      this.config.migrations.schemaName = context.schema;
+    }
     this.knex = Knex({ ...this.config, searchPath: context.schema });
     this.schema = context.schema;
   }

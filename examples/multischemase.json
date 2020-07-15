@@ -8,5 +8,6 @@
   },
   // "fileRegex": "^\\d+[\\w-]+\\.sql$",                        /* Regex to match sql files in migration directory */
   // "client": "postgresql",                                            /* Database client type */
-  "directory": "examples/migrations"                            /* Migration directory to get migration files */
+  "directory": "examples/migrations"                            /* Migration directory to get migration files */,
+  "tableName": "schema_version"
 }

@@ -13,11 +13,11 @@ export class CustomKnexMultischemase extends KnexMultischemase implements IMulti
       log: config.log,
       
       migrations: {
-        directory: config.directory,
         tableName: config.tableName
       }
     });
     this.migrator.setFileRegex(config.fileRegex);
+    this.migrator.setDirectory(config.directory);
   }
 }
 
