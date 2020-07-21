@@ -23,7 +23,7 @@ $ npm install mssql # not tested
 
 ### Configuração
 
-Para configurar há várias maneiras, com json, passando caminho de arquivo e passando um cliend do `Knex`. Vou listar abaixo as formas de configuração:
+Para configurar há várias maneiras, com json, passando caminho de arquivo e passando um cliend do `Knex`. Vamos listar abaixo as formas de configuração:
 
 #### Config file
 
