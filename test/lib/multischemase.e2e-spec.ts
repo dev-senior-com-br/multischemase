@@ -1,4 +1,3 @@
-import { Multischemase } from '../../src/index';
 import Knex from 'knex';
 import { parse } from 'comment-json';
 import { readFileSync } from 'fs';
@@ -12,13 +11,16 @@ import {
   TABLE_FILMS,
   RAW_QUERY_EXISTS
 } from '../constants';
-
+import { Multischemase, Custom } from '../../src';
 const parsedConfig = parse(readFileSync(MULTISCHEMASE_JSON.get(), 'utf-8'));
 
 const knex = Knex(parsedConfig);
-const multischemase = new Multischemase(MULTISCHEMASE_JSON.get());
 
+let multischemase: Multischemase;
 describe('Multischemase lib (e2e) on postgres', () => {
+  beforeAll(async () => {
+    multischemase = await Custom(MULTISCHEMASE_JSON.get());
+  });
   beforeEach(async () => {
     await knex.raw(`CREATE SCHEMA IF NOT EXISTS ${CONTEXT_1.get()}`);
     await knex.raw(`CREATE SCHEMA IF NOT EXISTS ${CONTEXT_3.get()}`);

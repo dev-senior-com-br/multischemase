@@ -7,7 +7,7 @@
     "password": "postgres"                                      /* Connection password */
   },
   // "fileRegex": "^\\d+[\\w-]+\\.sql$",                        /* Regex to match sql files in migration directory */
-  // "migrationType": "sql",                                    /* Migration type.*/
-  // "client": "pg",                                            /* Database client type */
-  "directory": "examples/migrations"                            /* Migration directory to get migration files */
+  // "client": "postgresql",                                            /* Database client type */
+  "directory": "examples/migrations"                            /* Migration directory to get migration files */,
+  "tableName": "schema_version"
 }
