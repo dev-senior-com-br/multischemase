@@ -18,4 +18,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Configurado CI/CD utilizando Github Actions.
 -   Migrado a solução de Flyway para Knex, deixando a lib sem dependencia de `Java` e `Maven`.
 
-[Unreleased]: https://github.com/dev-senior-com-br/multischemase/commit/HEAD
+[Unreleased]: https://github.com/dev-senior-com-br/multischemase/compare/master...master
