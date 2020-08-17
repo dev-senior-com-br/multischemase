@@ -1,0 +1,3 @@
+major-labels: ['release:major', 'major']
+minor-labels: ['release:minor', 'minor']
+patch-labels: ['release:patch', 'patch']

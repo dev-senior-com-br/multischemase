@@ -1,0 +1,56 @@
+name: Publish release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get the version
+      id: get_version
+      run: |
+        echo ::set-output name=version::$(echo ${{ github.ref }} | sed -e 's/refs\/tags\///g')
+        echo ::set-output name=version_without_v::$(echo ${{ github.ref }} | sed -e 's/refs\/tags\/v//g')
+    - name: Update package.json
+      run: npm version --no-git-tag-version ${{ steps.get_version.outputs.version }}
+    - name: Update changelog
+      uses: thomaseizinger/keep-a-changelog-new-release@v1
+      with:
+        version: ${{ steps.get_version.outputs.version_without_v }}
+    - name: Commit changes master
+      uses: EndBug/add-and-commit@v4
+      with:
+        ref: 'master'
+        message: "[CI_PUBLISH] Updated CHANGELOG.md and package.json"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Update tag
+      run: |
+        tag=${{ steps.get_version.outputs.version }}
+        git_refs_url=$(jq .repository.git_refs_url $GITHUB_EVENT_PATH | tr -d '"' | sed 's/{\/sha}//g')
+        
+        echo "**pushing tag ${{ steps.get_version.outputs.version }} to repo $GITHUB_REPOSITORY"
+        sha=$(git rev-parse HEAD)
+        curl -s -X PATCH "$git_refs_url/tags/${{ steps.get_version.outputs.version }}" \
+        -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        -d @- << EOF
+        {
+          "sha": "$sha",
+          "force": true
+        }
+        EOF
+    - uses: actions/setup-node@master
+      with:
+        node-version: 12
+        registry-url: 'https://registry.npmjs.org/'
+    - name: Publish to NPM
+      run: |
+        npm i
+        npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+        npm publish --access public 
+      env:
+        CI: true
+        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
