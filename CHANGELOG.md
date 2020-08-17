@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2020-08-16
+
 ### Changed
 
 ### Fixed
@@ -18,4 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Configurado CI/CD utilizando Github Actions.
 -   Migrado a solução de Flyway para Knex, deixando a lib sem dependencia de `Java` e `Maven`.
 
-[Unreleased]: https://github.com/dev-senior-com-br/multischemase/compare/master...master
+[Unreleased]: https://github.com/dev-senior-com-br/multischemase/compare/v1.1.0...HEAD
+
+[1.1.0]: https://github.com/olivierlacan/keep-a-changelog/releases/tag/v1.1.0
