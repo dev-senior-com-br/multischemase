@@ -1,0 +1,22 @@
+name: Build branches
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Setup node 12
+        uses: actions/setup-node@master
+        with:
+          node-version: 12
+      - name: Build and test
+        run: |
+          npm i
+          npm run build
+          npm test

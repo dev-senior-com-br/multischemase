@@ -1,0 +1,48 @@
+name: Draft release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  update_release_draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Setup node 12
+        uses: actions/setup-node@master
+        with:
+          node-version: 12
+      - name: Build and test
+        run: |
+          npm i
+          npm run build
+          npm test
+      - name: Draft version
+        id: draft_version
+        uses: patrickjahns/version-drafter-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Read changelog
+        id: read_changelog
+        uses: mindsers/changelog-reader-action@v1
+        with:
+          version: Unreleased
+          path: ./CHANGELOG.md
+      - name: Delete drafts
+        uses: hugo19941994/delete-draft-releases@v0.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: v${{ steps.draft_version.outputs.next-version }}
+          release_name: Release ${{ steps.draft_version.outputs.next-version }}
+          body: ${{ steps.read_changelog.outputs.log_entry }}
+          draft: true
+          prerelease: false
