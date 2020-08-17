@@ -9,7 +9,7 @@
     "lint": "eslint src",
     "lint:fix": "npm run lint -- --fix",
     "start": "npm run build && node examples/index.js",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json"
