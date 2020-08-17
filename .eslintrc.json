@@ -23,8 +23,7 @@
     "max-len": [
       "error",
       {
-        "code": 100,
-        "tabWidth": 2
+        "code": 120
       }
     ],
     "semi": [
