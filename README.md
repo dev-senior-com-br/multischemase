@@ -246,3 +246,13 @@ OBS: Não recomendamos que você tenha várias instancias de [Multischemase](#mu
 ## Exemplos
 
 Dentro da pasta `examples` possui alguns exemplos de uso. Para testar basta ter um `postgres` local com user e pass como `postgres`. Para rodar basta executar `npm start`. É possível mudar a configuração default dos exemplos alterando o arquivo `examples/multischemase.json`
+
+## [Guia de contribuição](https://dev.senior.com.br/guia-de-contribuicao/)
+
+## Suporte
+
+Criar uma issue [https://github.com/dev-senior-com-br/multischemase/issues](https://github.com/dev-senior-com-br/multischemase/issues)
+
+## License
+
+Copyright © 2020.
