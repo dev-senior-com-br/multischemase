@@ -51,7 +51,7 @@
   ],
   "dependencies": {
     "comment-json": "^3.0.2",
-    "knex": "^0.21.1"
+    "knex": "^2.4.0"
   },
   "jest": {
     "moduleFileExtensions": [
